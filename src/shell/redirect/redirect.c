@@ -54,7 +54,7 @@ static int handle_output_redirect(char *command, char *file, char **env,
 {
     int fd = 0;
 
-    if(!file) {
+    if (!file) {
         printf("Missing name for redirect.\n");
         return 1;
     }
