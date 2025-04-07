@@ -52,8 +52,12 @@ static int execute_command_with_redirect(char *command, char **env, int fd,
 static int handle_output_redirect(char *command, char *file, char **env,
     int append)
 {
-    int fd;
+    int fd = 0;
 
+    if(!file) {
+        printf("Missing name for redirect.\n");
+        return 1;
+    }
     if (append)
         fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
     else
@@ -98,6 +102,10 @@ static int handle_single_input_redirect(char *buffer, char **env)
     char *command = trim_whitespace(my_strtok(buffer, "<"));
     char *file = trim_whitespace(my_strtok(NULL, "<"));
 
+    if (!file) {
+        printf("Missing name for redirect.\n");
+        return 1;
+    }
     return handle_input_redirect(command, file, env);
 }
 
