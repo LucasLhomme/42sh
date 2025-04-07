@@ -6,19 +6,19 @@
 */
 #include "lib.h"
 
-char *my_strstr(char *str, char const *to_find)
+char *my_strstr(const char *str, const char *to_find)
 {
     int j = 0;
 
     if (!*to_find)
-        return str;
+        return (char *)str;
     for (int i = 0; str[i] != '\0'; i++) {
-        for (; str[i + j] != '\0' && to_find[j]
-        != '\0' && str[i + j] == to_find[j]; j++) {
+        while (str[i + j] != '\0' && to_find[j] != '\0'
+            && str[i + j] == to_find[j]) {
             j++;
         }
         if (to_find[j] == '\0')
-            return &str[i];
+            return (char *)&str[i];
     }
     return NULL;
 }

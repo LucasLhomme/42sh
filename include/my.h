@@ -9,12 +9,6 @@
 #include <sys/wait.h>
 #include <stdarg.h>
 
-typedef struct hand_buffer_s {
-    char *buffer;
-    struct hand_buffer_s *next;
-    struct hand_buffer_s *prev;
-} hand_buffer_t;
-
 typedef int (*command_func_t)(char *, char **);
 
 typedef struct handle_command_s {
@@ -60,10 +54,20 @@ int my_unsetenv(char *name, char **env);
 int execute_bin(char *path, char **argv, char **env);
 int hand_buffer(char *buffer, char **env);
 int simple_pipe(char *buffer, char **env);
-char *concas_command(char **argv);
+char *concas_command(char **argv, char **env);
 int pipe_command_setup(char *command1, char *command2, char **env);
 int simple_semicolon(char *buffer, char **env);
 int redirect(char *buffer, char **env);
+int my_execute_program(char *buffer, char **env);
 void cleanup_argv(char **argv);
+void free_argv(char **argv);
+char *find_env(char *path, char **env);
+int handle_null_value(char *name, char **env);
+int handle_invalid_variable_name(int exit_check_var, char **argv);
+int handle_too_many_arguments(char **argv);
+int handle_no_arguments(char **env, char **argv);
+int print_env(char **env);
+int find_and_execute_command(char *buffer, char **env, int in_fd, int out_fd);
+int is_null_command(char *command1, char *command2);
 
 #endif /* MY_H_ */

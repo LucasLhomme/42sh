@@ -32,7 +32,7 @@ int new_value_env(char *name, char **env)
     char *new_value = malloc(my_strlen(name) + 2);
     int i = 0;
 
-    if (!name)
+    if (!name || new_value == NULL)
         return 84;
     my_strcpy(new_value, name);
     my_strcat(new_value, "=");

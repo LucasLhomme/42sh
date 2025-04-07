@@ -7,13 +7,6 @@
 #include "my.h"
 #include "lib.h"
 
-int print_env(char **env)
-{
-    for (int i = 0; env[i] != NULL; i++)
-        my_printf("%s\n", env[i]);
-    return 0;
-}
-
 int check_var(char *name)
 {
     if (!name)
@@ -37,82 +30,62 @@ int check_var(char *name)
     return 0;
 }
 
-static void free_argv(char **argv)
+int update_env_var(char *name, char *value, char **env, int index)
 {
-    for (int i = 0; argv[i] != NULL; i++)
-        free(argv[i]);
-    free(argv);
-}
+    char *new_entry = malloc(my_strlen(name) + my_strlen(value) + 2);
 
-static int handle_no_arguments(char **env, char **argv)
-{
-    print_env(env);
-    free_argv(argv);
+    if (new_entry == NULL)
+        return 84;
+    my_strcpy(new_entry, name);
+    my_strcat(new_entry, "=");
+    my_strcat(new_entry, value);
+    free(env[index]);
+    env[index] = new_entry;
     return 0;
 }
 
-static int handle_too_many_arguments(char **argv)
+int handle_name_and_value(char *name, char *value, char **env)
 {
-    my_printf("setenv: Too many arguments.\n");
-    free_argv(argv);
-    return 1;
+    int name_len = my_strlen(name);
+
+    for (int i = 0; env[i] != NULL; i++) {
+        if (my_strncmp(env[i], name, name_len) == 0 &&
+            env[i][name_len] == '=') {
+            return update_env_var(name, value, env, i);
+        }
+    }
+    return over_value_env(name, value, env);
 }
 
-static int handle_invalid_variable_name(int exit_check_var, char **argv)
+int process_setenv_args(char **argv, char **env)
 {
-    free_argv(argv);
-    return exit_check_var;
-}
+    char *name = argv[1];
+    char *value = argv[2];
+    int exit_check_var = check_var(name);
 
-static int handle_null_value(char *name, char **env, char **argv)
-{
-    int result = new_value_env(name, env);
-
-    free_argv(argv);
-    return result;
-}
-
-static int handle_name_and_value(char *name, char *value,
-    char **env, char **argv)
-{
-    int result = over_value_env(name, value, env);
-
-    free_argv(argv);
-    return result;
+    if (exit_check_var != 0)
+        return handle_invalid_variable_name(exit_check_var, argv);
+    if (value == NULL)
+        return handle_null_value(name, env);
+    return handle_name_and_value(name, value, env);
 }
 
 int my_setenv(char *buffer, char **env)
 {
     char **argv = my_str_to_word_array(buffer);
-    char *name = argv[1];
-    char *value = argv[2];
-    int exit_check_var = check_var(name);
+    int result = 84;
 
+    if (!argv) {
+        free_argv(argv);
+        return 84;
+    }
     if (!argv[1])
-        return handle_no_arguments(env, argv);
-    if (argv[1] && argv[2] && argv[3])
-        return handle_too_many_arguments(argv);
-    if (exit_check_var != 0)
-        return handle_invalid_variable_name(exit_check_var, argv);
-    if (value == NULL)
-        return handle_null_value(name, env, argv);
-    if (name != NULL || value != NULL)
-        return handle_name_and_value(name, value, env, argv);
-    free_argv(argv);
-    return 0;
-}
-
-int my_env(char *buffer, char **env)
-{
-    char **argv = my_str_to_word_array(buffer);
-    int result = 0;
-
-    if (my_strncmp(buffer, "unsetenv", 8) == 0)
-        result = my_unsetenv(argv[1], env);
-    else if (my_strncmp(buffer, "env", 3) == 0)
-        result = print_env(env);
-    for (int i = 0; argv[i] != NULL; i++)
-        free(argv[i]);
-    free(argv);
+        result = handle_no_arguments(env, argv);
+    else if (argv[1] && argv[2] && argv[3])
+        result = handle_too_many_arguments(argv);
+    else
+        result = process_setenv_args(argv, env);
+    if (result != 0 && result != 1)
+        free_argv(argv);
     return result;
 }

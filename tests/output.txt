@@ -1,0 +1,7 @@
+total 56
+-rw-r--r-- 1 lucas-lhomme lucas-lhomme    12 Apr  7 14:43 coucou
+-rw-r--r-- 1 lucas-lhomme lucas-lhomme     0 Apr  7 14:43 output.txt
+-rwxrwxr-x 1 lucas-lhomme lucas-lhomme 15808 Feb 21 14:28 segfault.out
+-rw-rw-r-- 1 lucas-lhomme lucas-lhomme  1005 Apr  7 14:43 temp.txt
+-rwxrwxr-x 1 lucas-lhomme lucas-lhomme  4023 Apr  7 14:43 tester.sh
+-rw-rw-r-- 1 lucas-lhomme lucas-lhomme 25107 Mar 28 13:54 tests
