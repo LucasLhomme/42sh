@@ -1,4 +1,4 @@
-lib(new)
+.make_errors_warnings
 # Prerequisites
 *.d
 mysh

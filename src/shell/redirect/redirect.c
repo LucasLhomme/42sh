@@ -52,8 +52,12 @@ int redirect(char *buffer, char **env)
 {
     char *command = my_strtok(buffer, ">");
     char *file = my_strtok(NULL, ">");
-    int fd;
+    int fd = 0;
 
+    if (!file) {
+        printf("Missing name for redirect.\n");
+        return 1;
+    }
     if (file != NULL)
         file = trim_whitespace(file);
     if (command != NULL)
