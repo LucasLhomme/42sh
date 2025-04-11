@@ -46,8 +46,7 @@ static void copy_env_vars(char **env, char **new_env, char *name, int *j)
         env[i][my_strlen(name)] != '=') {
             new_env[*j] = env[i];
             (*j)++;
-        } else
-            free(env[i]);
+        }
     }
     new_env[*j] = NULL;
 }

@@ -93,7 +93,7 @@ load_test()
   then
     if [ $debug -ge 1 ]
     then
-      echo "Test $id ($NAME) : ✅"
+      # echo "Test $id ($NAME) : ✅"
       test_passed=$((test_passed + 1))
       if [ $debug -eq 2 ]
       then
