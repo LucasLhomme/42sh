@@ -15,7 +15,7 @@ ORANGE=\033[1;33m
 NC=\033[0m # No Color
 
 # Variables
-NAME = mysh
+NAME = 42sh
 CFLAGS = -Wall -Wextra -W -Iinclude -Ilib/include -fdiagnostics-color=always
 SRC =	./src/main.c\
 		./src/shell/redirect/pipe.c\
