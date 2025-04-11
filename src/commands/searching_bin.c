@@ -4,9 +4,9 @@
 ** File description:
 ** searching_bin
 */
+
 #include "lib.h"
 #include "my.h"
-#include <sys/stat.h>
 
 static int is_valid_home_path(char *path)
 {

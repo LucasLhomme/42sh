@@ -4,7 +4,9 @@
 ** File description:
 ** cleaning_buffer
 */
+
 #include "lib.h"
+
 char *cleaning_buffer(char *str)
 {
     char *end = str + my_strlen(str) - 1;

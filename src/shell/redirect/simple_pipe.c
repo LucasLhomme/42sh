@@ -4,10 +4,9 @@
 ** File description:
 ** simple_pipe
 */
+
 #include "my.h"
 #include "lib.h"
-#include <ctype.h>
-#include <errno.h>
 
 static int execute_with_context(executioncontext_t *context)
 {
