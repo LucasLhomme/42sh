@@ -4,7 +4,7 @@
 ** File description:
 ** concas_command
 */
-#include <stddef.h>
+
 #include "lib.h"
 #include "my.h"
 

@@ -7,7 +7,12 @@
 
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <stdarg.h>
+#include <ctype.h>
+#include <errno.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 typedef int (*command_func_t)(char *, char **);
 

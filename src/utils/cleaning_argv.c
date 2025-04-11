@@ -4,8 +4,8 @@
 ** File description:
 ** clean_argv
 */
-#include <stddef.h>
-#include <stdlib.h>
+
+#include "my.h"
 
 void cleanup_argv(char **argv)
 {

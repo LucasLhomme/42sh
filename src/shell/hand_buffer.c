@@ -7,8 +7,6 @@
 
 #include "my.h"
 #include "lib.h"
-#include <unistd.h>
-#include <sys/wait.h>
 
 const handle_redirect_t redirect_table[] = {
     {"|", simple_pipe},

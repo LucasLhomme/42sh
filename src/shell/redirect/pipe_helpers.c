@@ -4,10 +4,9 @@
 ** File description:
 ** pipe_helpers
 */
+
 #include "my.h"
 #include "lib.h"
-#include <ctype.h>
-#include <errno.h>
 
 static int setup_first_pipe(int pipefd[2], char *command1, char **env)
 {

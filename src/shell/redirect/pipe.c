@@ -4,10 +4,9 @@
 ** File description:
 ** pipe
 */
+
 #include "my.h"
 #include "lib.h"
-#include <ctype.h>
-#include <errno.h>
 
 int simple_pipe(char *buffer, char **env)
 {

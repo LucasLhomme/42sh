@@ -4,9 +4,9 @@
 ** File description:
 ** command_cd
 */
+
 #include "my.h"
 #include "lib.h"
-#include <errno.h>
 
 int handling_error(char *path, char *current)
 {

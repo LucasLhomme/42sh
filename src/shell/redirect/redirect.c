@@ -4,12 +4,11 @@
 ** File description:
 ** redirect
 */
+
 #include "lib.h"
 #include "my.h"
 #include <fcntl.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 
 static int handle_redirect_error(char *command, char *file)
 {
