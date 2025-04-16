@@ -74,5 +74,6 @@ int handle_no_arguments(char **env, char **argv);
 int print_env(char **env);
 int find_and_execute_command(char *buffer, char **env, int in_fd, int out_fd);
 int is_null_command(char *command1, char *command2);
+int handle_ampersand(char *buffer, char **env);
 
 #endif /* MY_H_ */
