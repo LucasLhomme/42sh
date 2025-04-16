@@ -8,16 +8,6 @@
 #include "my.h"
 #include "lib.h"
 
-int isalphanum_with_blanck(char *buffer)
-{
-    for (int i = 0; buffer[i] != '\0'; i++) {
-        if (my_strcmp(buffer, " ") == 0 || my_strcmp(buffer, "\t") == 0
-        || isalphanum(buffer[i]) == 0)
-            return 1;
-    }
-    return 0;
-}
-
 int execute_bin(char *path, char **argv, char **env)
 {
     int status = 0;
