@@ -13,6 +13,7 @@ const handle_redirect_t redirect_table[] = {
     {";", simple_semicolon},
     {">", redirect},
     {"<", redirect},
+    {"&&", handle_ampersand},
     {NULL, NULL}
 };
 
