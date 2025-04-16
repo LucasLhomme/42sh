@@ -9,11 +9,12 @@
 #include "lib.h"
 
 const handle_redirect_t redirect_table[] = {
+    {"||", handle_double_pipe},
     {"|", simple_pipe},
     {";", simple_semicolon},
     {">", redirect},
     {"<", redirect},
-    {"&&", handle_ampersand},
+    {"&&", handle_double_ampersand},
     {NULL, NULL}
 };
 
