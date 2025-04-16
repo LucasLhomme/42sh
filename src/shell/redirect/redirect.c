@@ -13,11 +13,11 @@
 static int handle_redirect_error(char *command, char *file)
 {
     if (command == NULL || command[0] == '\0') {
-        my_printf("Invalid null command.\n");
+        printf("Invalid null command.\n");
         return 1;
     }
     if (file == NULL || file[0] == '\0') {
-        my_printf("Missing name for redirect.\n");
+        printf("Missing name for redirect.\n");
         return 1;
     }
     return 0;
@@ -37,7 +37,7 @@ static int execute_command_with_redirect(char *command, char **env, int fd,
         dup2(fd, std_fd);
         close(fd);
         if (hand_command(command, env) == -1) {
-            my_printf("%s: Command not found.\n", command);
+            printf("%s: Command not found.\n", command);
             exit(1);
         }
         exit(0);
@@ -74,7 +74,7 @@ static int handle_input_redirect(char *command, char *file, char **env)
     if (handle_redirect_error(command, file))
         return 1;
     if (fd == -1) {
-        my_printf("%s: No such file or directory\n", file);
+        printf("%s: No such file or directory\n", file);
         return 1;
     }
     return result;
@@ -110,11 +110,11 @@ static int handle_single_input_redirect(char *buffer, char **env)
 
 int redirect(char *buffer, char **env)
 {
-    if (my_strstr(buffer, ">>"))
+    if (strstr(buffer, ">>"))
         return handle_double_output_redirect(buffer, env);
-    if (my_strstr(buffer, ">"))
+    if (strstr(buffer, ">"))
         return handle_single_output_redirect(buffer, env);
-    if (my_strstr(buffer, "<"))
+    if (strstr(buffer, "<"))
         return handle_single_input_redirect(buffer, env);
     return 1;
 }

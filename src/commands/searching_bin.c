@@ -16,7 +16,7 @@ static int is_valid_home_path(char *path)
 char *find_env(char *path, char **env)
 {
     for (int i = 0; env[i]; i++) {
-        if (my_strncmp(env[i], "HOME=", 5) == 0) {
+        if (strncmp(env[i], "HOME=", 5) == 0) {
             path = env[i] + 5;
             break;
         }
@@ -31,7 +31,7 @@ static int handle_command_not_found(char **argv, char *path)
     if (path != NULL)
         free(path);
     if (argv != NULL && argv[0] != NULL)
-        my_printf("%s: Command not found.\n", argv[0]);
+        printf("%s: Command not found.\n", argv[0]);
     free_argv(argv);
     return 1;
 }
@@ -46,11 +46,11 @@ static char *expand_tilde(char *arg, char **env)
     home_path = find_env(NULL, env);
     if (home_path == NULL)
         return arg;
-    new_path = malloc(my_strlen(home_path) + my_strlen(arg) + 1);
+    new_path = malloc(strlen(home_path) + strlen(arg) + 1);
     if (new_path == NULL)
         return arg;
-    my_strcpy(new_path, home_path);
-    my_strcat(new_path, arg + 1);
+    strcpy(new_path, home_path);
+    strcat(new_path, arg + 1);
     free(arg);
     return new_path;
 }
@@ -69,7 +69,7 @@ static int handle_empty_or_null_argv(char *buffer, char **argv)
             free_argv(argv);
             return 1;
         }
-        my_printf("%s: Command not found.\n", buffer);
+        printf("%s: Command not found.\n", buffer);
         return 1;
     }
     return 0;
@@ -81,7 +81,7 @@ static int handle_directory_case(char **argv)
 
     if (argv[0] != NULL && argv[0][0] != '\0') {
         if (stat(argv[0], &st) == 0 && S_ISDIR(st.st_mode)) {
-            my_printf("%s: Is a directory.\n", argv[0]);
+            printf("%s: Is a directory.\n", argv[0]);
             free_argv(argv);
             return 1;
         }
@@ -92,7 +92,7 @@ static int handle_directory_case(char **argv)
 static int handle_null_path(char **argv, char *path)
 {
     if (path == NULL) {
-        my_printf("%s: Command not found.\n", argv[0]);
+        printf("%s: Command not found.\n", argv[0]);
         free_argv(argv);
         return 1;
     }
@@ -108,7 +108,7 @@ int searching_bin(char *buffer, char **env)
         free_argv(argv);
         return 1;
     }
-    if (argv != NULL && argv[0] != NULL && my_strncmp(argv[0], "/", 1) == 0)
+    if (argv != NULL && argv[0] != NULL && strncmp(argv[0], "/", 1) == 0)
         return 0;
     if (handle_empty_or_null_argv(buffer, argv))
         return 1;

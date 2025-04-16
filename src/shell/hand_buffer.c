@@ -21,7 +21,7 @@ const handle_redirect_t redirect_table[] = {
 int hand_buffer(char *buffer, char **env)
 {
     for (int i = 0; redirect_table[i].command != NULL; i++) {
-        if (my_strstr(buffer, redirect_table[i].command) != NULL)
+        if (strstr(buffer, redirect_table[i].command) != NULL)
             return redirect_table[i].func(buffer, env);
     }
     return hand_command(buffer, env);

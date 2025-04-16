@@ -13,9 +13,9 @@ int my_env(char *buffer, char **env)
     char **argv = my_str_to_word_array(buffer);
     int result = 0;
 
-    if (my_strncmp(buffer, "unsetenv", 8) == 0)
+    if (strncmp(buffer, "unsetenv", 8) == 0)
         result = my_unsetenv(argv[1], env);
-    else if (my_strncmp(buffer, "env", 3) == 0)
+    else if (strncmp(buffer, "env", 3) == 0)
         result = print_env(env);
     for (int i = 0; argv[i] != NULL; i++)
         free(argv[i]);

@@ -11,7 +11,7 @@
 int print_env(char **env)
 {
     for (int i = 0; env[i] != NULL; i++)
-        my_printf("%s\n", env[i]);
+        printf("%s\n", env[i]);
     return 0;
 }
 
@@ -24,7 +24,7 @@ int handle_no_arguments(char **env, char **argv)
 
 int handle_too_many_arguments(char **argv)
 {
-    my_printf("setenv: Too many arguments.\n");
+    printf("setenv: Too many arguments.\n");
     free_argv(argv);
     return 1;
 }
@@ -41,11 +41,11 @@ int handle_null_value(char *name, char **env)
     int result = 0;
 
     for (int i = 0; env[i] != NULL; i++) {
-        if (my_strncmp(env[i], name, my_strlen(name)) == 0 &&
-        env[i][my_strlen(name)] == '=') {
-            new_entry = malloc(my_strlen(name) + 2);
-            my_strcpy(new_entry, name);
-            my_strcat(new_entry, "=");
+        if (strncmp(env[i], name, strlen(name)) == 0 &&
+        env[i][strlen(name)] == '=') {
+            new_entry = malloc(strlen(name) + 2);
+            strcpy(new_entry, name);
+            strcat(new_entry, "=");
             env[i] = new_entry;
             return 0;
         }

@@ -14,17 +14,17 @@ int check_var(char *name)
         return 84;
     for (int i = 0; name[i] != '\0'; i++) {
         if (!my_isalpha(name[0])) {
-            my_printf("setenv: Variable name must begin with a letter.\n");
+            printf("setenv: Variable name must begin with a letter.\n");
             return 1;
         }
         if (nonalphanum(name[i]) != 0) {
-            my_printf
+            printf
             ("setenv: Variable name must contain alphanumeric characters.\n");
             return 1;
         }
         if ((!my_isalpha(name[i]) && !my_isnum(name[i]))) {
-            my_printf("setenv: Variable name must ");
-            my_printf("contain only alphanumeric characters.\n");
+            printf("setenv: Variable name must ");
+            printf("contain only alphanumeric characters.\n");
             return 1;
         }
     }
@@ -33,13 +33,13 @@ int check_var(char *name)
 
 int update_env_var(char *name, char *value, char **env, int index)
 {
-    char *new_entry = malloc(my_strlen(name) + my_strlen(value) + 2);
+    char *new_entry = malloc(strlen(name) + strlen(value) + 2);
 
     if (new_entry == NULL)
         return 84;
-    my_strcpy(new_entry, name);
-    my_strcat(new_entry, "=");
-    my_strcat(new_entry, value);
+    strcpy(new_entry, name);
+    strcat(new_entry, "=");
+    strcat(new_entry, value);
     free(env[index]);
     env[index] = new_entry;
     return 0;
@@ -47,10 +47,10 @@ int update_env_var(char *name, char *value, char **env, int index)
 
 int handle_name_and_value(char *name, char *value, char **env)
 {
-    int name_len = my_strlen(name);
+    int name_len = strlen(name);
 
     for (int i = 0; env[i] != NULL; i++) {
-        if (my_strncmp(env[i], name, name_len) == 0 &&
+        if (strncmp(env[i], name, name_len) == 0 &&
             env[i][name_len] == '=') {
             return update_env_var(name, value, env, i);
         }

@@ -10,8 +10,8 @@
 
 int verify_buffer(char *path, char **current)
 {
-    if (!path || my_strcmp(path, "") == 0) {
-        my_printf("unsetenv: Too few arguments.");
+    if (!path || strcmp(path, "") == 0) {
+        printf("unsetenv: Too few arguments.");
         free(*current);
         *current = NULL;
         return 1;
@@ -22,7 +22,7 @@ int verify_buffer(char *path, char **current)
 int check_name(char *name)
 {
     if (!name) {
-        my_printf("unsetenv: Too few arguments.\n");
+        printf("unsetenv: Too few arguments.\n");
         return 1;
     }
     return 0;
@@ -42,8 +42,8 @@ static int count_env_vars(char **env)
 static void copy_env_vars(char **env, char **new_env, char *name, int *j)
 {
     for (int i = 0; env[i] != NULL; i++) {
-        if (my_strncmp(env[i], name, my_strlen(name)) != 0 ||
-        env[i][my_strlen(name)] != '=') {
+        if (strncmp(env[i], name, strlen(name)) != 0 ||
+        env[i][strlen(name)] != '=') {
             new_env[*j] = env[i];
             (*j)++;
         }

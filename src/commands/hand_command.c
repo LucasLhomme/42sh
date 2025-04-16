@@ -22,7 +22,7 @@ static int is_folder(char *buffer)
     int exit_status = 0;
 
     if (stat(buffer, &path_stat) == 0 && S_ISDIR(path_stat.st_mode)) {
-        my_printf("%s: Permission denied.\n", buffer);
+        printf("%s: Permission denied.\n", buffer);
         exit_status = 1;
     }
     return exit_status;
@@ -31,8 +31,8 @@ static int is_folder(char *buffer)
 int my_execute_program(char *buffer, char **env)
 {
     for (int i = 0; commands[i].command != NULL; i++) {
-        if (my_strncmp(buffer, commands[i].command,
-            my_strlen(commands[i].command)) == 0)
+        if (strncmp(buffer, commands[i].command,
+            strlen(commands[i].command)) == 0)
             return commands[i].func(buffer, env);
     }
     return searching_bin(buffer, env);
@@ -67,7 +67,7 @@ int is_program(char *buffer, char **env)
     char **args = my_str_to_word_array(buffer);
     int result = 0;
 
-    if (my_strncmp(buffer, "./", 2) == 0 || (my_strncmp(buffer, "/", 1) == 0))
+    if (strncmp(buffer, "./", 2) == 0 || (strncmp(buffer, "/", 1) == 0))
         result = handle_fork(args, env);
     free_argv(args);
     return result;

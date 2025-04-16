@@ -12,9 +12,9 @@ int process_input(char *buffer, char **env)
 {
     int exit_status = 0;
 
-    if (my_strcmp(buffer, " ") == 0 || my_strcmp(buffer, "\t") == 0 || !buffer)
+    if (strcmp(buffer, " ") == 0 || strcmp(buffer, "\t") == 0 || !buffer)
         return 0;
-    if (my_strcmp(buffer, "\n") != 0) {
+    if (strcmp(buffer, "\n") != 0) {
         cleaning_buffer(buffer);
         exit_status = hand_buffer(buffer, env);
     }
@@ -29,17 +29,17 @@ int loop_terminal(char **env)
     int exit_status = 0;
 
     while (1) {
-        my_printf("$> ");
+        printf("$> ");
         read = getline(&buffer, &len, stdin);
         if (read == -1) {
             free(buffer);
-            my_printf("exit\n");
+            printf("exit\n");
             break;
         }
         trim_whitespace(buffer);
-        if (my_strcmp(buffer, "exit") == 0)
+        if (strcmp(buffer, "exit") == 0)
             break;
-        if (my_strcmp(buffer, "\n") != 0)
+        if (strcmp(buffer, "\n") != 0)
         exit_status = process_input(buffer, env);
     }
     return exit_status;
@@ -58,9 +58,9 @@ int loop_tty(char **env)
             free(buffer);
             break;
         }
-        if (my_strcmp(buffer, "exit") == 0)
+        if (strcmp(buffer, "exit") == 0)
             break;
-        if (my_strcmp(buffer, "\n") != 0)
+        if (strcmp(buffer, "\n") != 0)
         exit_status = process_input(buffer, env);
         if (exit_status != 0)
             return exit_status;

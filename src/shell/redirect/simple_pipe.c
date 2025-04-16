@@ -39,7 +39,7 @@ static int execute_if_valid(executioncontext_t *context, char *buffer)
     if (access(context->path, X_OK) == 0) {
         execute_with_context(context);
     } else {
-        my_printf("%s: Command not found.\n", buffer);
+        printf("%s: Command not found.\n", buffer);
         free(context->path);
         cleanup_argv(context->argv);
         return 1;
@@ -68,11 +68,11 @@ int find_and_execute_command(char *buffer, char **env,
 int is_null_command(char *command1, char *command2)
 {
     if (command1 == NULL || command2 == NULL) {
-        my_printf("Invalid null command.\n");
+        printf("Invalid null command.\n");
         return 1;
     }
     if (command1[0] == '|' || command2[0] == '|') {
-        my_printf("Invalid null command.\n");
+        printf("Invalid null command.\n");
         return 1;
     }
     return 0;

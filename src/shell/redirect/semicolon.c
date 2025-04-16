@@ -10,12 +10,12 @@
 
 int simple_semicolon(char *buffer, char **env)
 {
-    char *new_buffer = my_strtok(buffer, ";");
+    char *new_buffer = strtok(buffer, ";");
     int exit_status = 0;
 
     for (int i = 0; new_buffer != NULL; i++) {
         exit_status = hand_command(new_buffer, env);
-        new_buffer = my_strtok(NULL, ";");
+        new_buffer = strtok(NULL, ";");
     }
     return exit_status;
 }

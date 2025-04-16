@@ -10,8 +10,8 @@
 
 int simple_pipe(char *buffer, char **env)
 {
-    char *command1 = my_strtok(buffer, "|");
-    char *command2 = my_strtok(NULL, "|");
+    char *command1 = strtok(buffer, "|");
+    char *command2 = strtok(NULL, "|");
 
     return pipe_command_setup(command1, command2, env);
 }

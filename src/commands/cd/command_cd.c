@@ -14,15 +14,15 @@ int handling_error(char *path, char *current)
 
     if (chdir(path) != 0) {
         if (errno == ENOTDIR) {
-            my_printf("%s: Not a directory.\n", path);
+            printf("%s: Not a directory.\n", path);
             exit_status = 1;
         }
         if (errno == ENOENT) {
-            my_printf("%s: No such file or directory.\n", path);
+            printf("%s: No such file or directory.\n", path);
             exit_status = 1;
         }
         if (access(path, X_OK) != 0) {
-            my_printf("%s: Permission denied.\n", path);
+            printf("%s: Permission denied.\n", path);
             exit_status = 1;
         }
         free(current);
@@ -38,9 +38,9 @@ void prev_cd(char *buffer)
 
 int change_directory(char *path, char *current, char **prev)
 {
-    if (my_strncmp(path, "cd", 2) == 0)
+    if (strncmp(path, "cd", 2) == 0)
         return 0;
-    if (my_strcmp(path, "-") == 0) {
+    if (strcmp(path, "-") == 0) {
         prev_cd(*prev);
         free(*prev);
         *prev = current;
@@ -58,7 +58,7 @@ int change_directory(char *path, char *current, char **prev)
 static char *find_env_home(char *path, char **env)
 {
     for (int i = 0; env[i]; i++) {
-        if (my_strncmp(env[i], "HOME=", 5) == 0) {
+        if (strncmp(env[i], "HOME=", 5) == 0) {
             path = env[i] + 5;
             break;
         }
@@ -69,16 +69,16 @@ static char *find_env_home(char *path, char **env)
 int my_cd(char *buffer, char **env)
 {
     static char *prev = NULL;
-    char *path = my_strtok(buffer, " ");
+    char *path = strtok(buffer, " ");
     char *current = getcwd(NULL, 0);
 
-    path = my_strtok(NULL, " ");
-    if (my_strtok(NULL, " ") != NULL) {
-        my_printf("cd: Too many arguments.\n");
+    path = strtok(NULL, " ");
+    if (strtok(NULL, " ") != NULL) {
+        printf("cd: Too many arguments.\n");
         free(current);
         return 1;
     }
-    if (!path || my_strcmp(path, "") == 0 || my_strncmp(path, "~", 1) == 0) {
+    if (!path || strcmp(path, "") == 0 || strncmp(path, "~", 1) == 0) {
         path = find_env_home(path, env);
         if (!path) {
             free(current);
