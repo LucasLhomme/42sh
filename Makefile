@@ -26,6 +26,7 @@ SRC =	./src/main.c\
 		./src/shell/hand_buffer.c\
 		./src/shell/shell.c\
 		./src/shell/redirect/double_ampersand.c\
+		./src/shell/redirect/double_pipe.c\
 		./src/commands/hand_command.c\
 		./src/commands/execute_command.c\
 		./src/commands/searching_bin.c\

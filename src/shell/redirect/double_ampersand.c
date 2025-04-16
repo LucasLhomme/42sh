@@ -8,7 +8,7 @@
 #include "lib.h"
 #include "my.h"
 
-int handle_ampersand(char *buffer, char **env)
+int handle_double_ampersand(char *buffer, char **env)
 {
     char *new_buffer = my_strtok(buffer, "&&");
     int exit_status = 0;
