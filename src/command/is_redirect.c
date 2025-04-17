@@ -22,7 +22,7 @@ const command_t command[] = {
     {NULL, NULL}
 };
 
-static int is_good_command(char *command, char *arg, int *last_exit_status)
+static int is_good_command(char *command, char *arg)
 {
     if (my_strcmp(arg, command) == 0) {
         return 0;
