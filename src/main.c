@@ -1,74 +1,59 @@
 /*
 ** EPITECH PROJECT, 2025
-** B-PSU-200-LIL-2-1-minishell1-lucas.lhomme
+** B-PSU-200-LIL-2-1-minishell1-joseph.birck
 ** File description:
 ** main
 */
 
-#include "lib.h"
-#include "my.h"
+#include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <signal.h>
+#include "my.h"
+#include "project.h"
 
-int handle_child_process(char **env)
+void process_command(char *line, env_t *head, int *last_exit_status,
+    char **env)
 {
-    if (isatty(STDIN_FILENO) == 1)
-        return loop_terminal(env);
-    else
-        return loop_tty(env);
+    int nb_space = nb_char(line, ' ');
+    int nb_tab = nb_char(line, '\t');
+    int size = nb_tab + nb_space + 1;
+    char *args[size];
+
+    parse_args(line, args, size);
+    if (is_builtin(head, args, env, last_exit_status) == 1)
+        return;
+    execute_command(args, head, last_exit_status);
 }
 
-void print_signal_message(int status)
+void handle_input(env_t *head, int *last_exit_status, char **env)
 {
-    char *signal_message = strsignal(WTERMSIG(status));
+    char *line;
 
-    if (signal_message != NULL)
-        write(STDERR_FILENO, signal_message, my_strlen(signal_message));
-    else
-        write(STDERR_FILENO, "Unknown signal", 14);
-    if (WCOREDUMP(status))
-        write(STDERR_FILENO, " (core dumped)", 14);
-    write(STDERR_FILENO, "\n", 1);
-}
-
-int handle_parent_process(pid_t id)
-{
-    int status = 0;
-    int exit_status = 0;
-
-    if (waitpid(id, &status, 0) == -1) {
-        perror("waitpid failed");
-        return EXIT_FAILURE;
+    while (1) {
+        line = read_line();
+        if (!line) {
+            return;
+        }
+        if (line[0] == '\0') {
+            free(line);
+            continue;
+        }
+        process_command(line, head, last_exit_status, env);
+        free(line);
     }
-    if (WIFEXITED(status))
-        exit_status = WEXITSTATUS(status);
-    if (WIFSIGNALED(status)) {
-        print_signal_message(status);
-        exit_status = 128 + WTERMSIG(status);
-        return exit_status;
-    }
-    return exit_status;
 }
 
-pid_t initialize_fork(void)
+int main(int ac, char **av, char **env)
 {
-    pid_t id = fork();
+    env_t *head = def_linked_list(env[0], 0, env);
+    int last_exit_status = 0;
 
-    if (id == -1) {
-        perror("fork failed");
-        exit(EXIT_FAILURE);
-    }
-    return id;
-}
-
-int main(int ac, char **argv, char **env)
-{
-    pid_t id = initialize_fork();
-    char **new_env = env;
-
-    if (argv == NULL || ac < 1)
-        return 84;
-    if (id == 0)
-        exit(handle_child_process(new_env));
-    else
-        return handle_parent_process(id);
+    (void)ac;
+    (void)av;
+    signal(SIGINT, handle_ctr_c);
+    handle_input(head, &last_exit_status, env);
+    free_list(head);
+    return last_exit_status;
 }

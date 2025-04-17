@@ -1,6 +1,0 @@
-total 56
--rw-rw-r-- 1 gr-goire-fageot gr-goire-fageot    12 Apr 16 16:18 coucou
--rw-rw-r-- 1 gr-goire-fageot gr-goire-fageot 17301 Apr 11 10:25 criterion.c
--rw-rw-r-- 1 gr-goire-fageot gr-goire-fageot     0 Apr 16 16:18 output.txt
--rwxrwxr-x 1 gr-goire-fageot gr-goire-fageot  4023 Apr 16 16:04 tester.sh
--rw-rw-r-- 1 gr-goire-fageot gr-goire-fageot 25107 Apr 11 10:25 tests
