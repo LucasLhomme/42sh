@@ -119,6 +119,10 @@ int redirection(char **args);
 
 int is_command(env_t *head, char **args, int *last_exit_status);
 
+int is_backtick(char **args, int idx);
+
+int backtick_handle(char **args, int *last_exit_status);
+
 
 // Error
 

@@ -59,6 +59,8 @@ char *resolve_command_path(char **args, env_t *head)
             return args[0];
         return NULL;
     }
+    if (!head)
+        return NULL;
     return find_path(args[0], head);
 }
 
@@ -128,8 +130,10 @@ void execute_command(char **args, env_t *head, int *last_exit_status)
     char *cmd_path = NULL;
     pid_t pid = {0};
 
-    if (is_command(head, args, last_exit_status) != 0) {
+    if (is_command(head, args, last_exit_status) == 1)
         return;
+    if (is_backtick(args, 0) != 0) {
+        backtick_handle(args, last_exit_status);
     }
     cmd_path = resolve_command_path(args, head);
     if (!cmd_path) {

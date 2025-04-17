@@ -48,6 +48,9 @@ env_t *def_linked_list(char *line, int status, char **env)
 {
     env_t *head = NULL;
 
+    if (env[0] == NULL) {
+        return head;
+    }
     head = add_node(head, line, status);
     for (int i = 1; env[i] != NULL; i++) {
         head = add_node(head, env[i], status);

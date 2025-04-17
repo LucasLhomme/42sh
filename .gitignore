@@ -12,3 +12,4 @@ mysh
 *.txt
 test/*
 42sh
+backtick_handling.c
