@@ -15,6 +15,8 @@ char *get_env(const char *var, env_t *head)
 {
     int len = my_strlen(var);
 
+    if (head == NULL)
+        return NULL;
     for (env_t *tmp = head; tmp != NULL; tmp = tmp->next) {
         if (my_strncmp(tmp->line, var, len) == 0 && tmp->line[len] == '=') {
             return tmp->line + len + 1;
