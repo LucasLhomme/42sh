@@ -35,12 +35,12 @@ static int is_valid_variable_name(char *var_name, char **args)
 
 static int validate_setenv_args(char **args)
 {
-    char c = '\0';
-
     if (args[1] != NULL) {
-        c = get_last_char(args[0]);
-        if (nb_char(args[1], '=') == 1 && args[0][0] != '=' && c != '=')
+        if (strchr(args[1], '=') != NULL) {
+            my_putstrerror("setenv: Variable name must ");
+            my_putstrerror("contain alphanumeric characters.\n");
             return 1;
+        }
         if (nb_char(args[1], '.') == 1 || nb_char(args[1], '_') == 1)
             return 1;
         return is_valid_variable_name(args[1], args);
