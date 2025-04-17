@@ -124,6 +124,8 @@ void handle_ctr_c(int sig);
 
 // Get args
 
+int print_prompt(void);
+
 char *read_line(void);
 
 void parse_args(char *line, char **args, int size);
