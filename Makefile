@@ -52,7 +52,8 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(ENV_DIR)/linked_list_env.c \
 				$(SRC_DIR)/error_handling.c \
 				$(SRC_DIR)/get_args.c \
-				$(SRC_DIR)/main.c
+				$(SRC_DIR)/main.c \
+				$(SRC_DIR)/print_prompt.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

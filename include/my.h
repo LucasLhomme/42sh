@@ -14,6 +14,8 @@
     #include <dirent.h>
     #include <ctype.h>
     #include <sys/types.h>
+    #include <unistd.h>
+    #include <string.h>
     #include <sys/stat.h>
     #include "struct_word_array.h"
     #include "project.h"

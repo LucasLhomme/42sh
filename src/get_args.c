@@ -32,7 +32,8 @@ char *read_line(void)
     size_t len = 0;
 
     if (isatty(STDIN_FILENO) == 1)
-        write(1, "$> ", 3);
+        if (print_prompt() == 84)
+            write(1, "$> ", 3);
     if (getline(&line, &len, stdin) == -1) {
         free(line);
         return (NULL);
