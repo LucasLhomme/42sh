@@ -128,12 +128,7 @@ void execute_command(char **args, env_t *head, int *last_exit_status)
     char *cmd_path = NULL;
     pid_t pid = {0};
 
-    if (is_piped_command(args, last_exit_status)) {
-        handle_pipes(args, head, last_exit_status);
-        return;
-    }
-    if (is_semicolumn_command(args)) {
-        semicolumn_handle(args, head, last_exit_status);
+    if (is_command(head, args, last_exit_status) != 0) {
         return;
     }
     cmd_path = resolve_command_path(args, head);

@@ -42,6 +42,11 @@ typedef struct builtin_s {
     int (*function)(char **args, env_t *head, char **env);
 } builtin_t;
 
+typedef struct command_s {
+    char *command;
+    int (*function)(char **args, env_t *head, int *last_exit_status);
+} command_t;
+
 typedef struct pipe_command {
     char *cmd1[256];
     char *cmd2[256];
@@ -106,11 +111,13 @@ int is_semicolumn_command(char **args);
 
 void execute_command(char **args, env_t *head, int *last_exit_status);
 
-void semicolumn_handle(char **args, env_t *head, int *last_exit_status);
+int semicolumn_handle(char **args, env_t *head, int *last_exit_status);
 
 int handle_pipes(char **args, env_t *head, int *last_exit_status);
 
 int redirection(char **args);
+
+int is_command(env_t *head, char **args, int *last_exit_status);
 
 
 // Error
