@@ -13,7 +13,7 @@
 #include "my.h"
 #include "project.h"
 
-void process_command(char *line, env_t *head, int *last_exit_status,
+void process_command(char *line, env_t *head, int *exit_status,
     char **env)
 {
     int nb_space = nb_char(line, ' ');
@@ -22,15 +22,17 @@ void process_command(char *line, env_t *head, int *last_exit_status,
     char *args[size];
 
     parse_args(line, args, size);
-    if (is_builtin(head, args, env, last_exit_status) == 1)
+    if (is_builtin(head, args, env, exit_status) == 1)
         return;
-    execute_command(args, head, last_exit_status);
+    execute_command(args, head, exit_status);
 }
 
-void handle_input(env_t *head, int *last_exit_status, char **env)
+void handle_input(env_t *head, int *exit_status, char **env)
 {
     char *line;
 
+    if (isatty(STDIN_FILENO) == 1)
+        print_header();
     while (1) {
         line = read_line();
         if (!line) {
@@ -40,7 +42,7 @@ void handle_input(env_t *head, int *last_exit_status, char **env)
             free(line);
             continue;
         }
-        process_command(line, head, last_exit_status, env);
+        process_command(line, head, exit_status, env);
         free(line);
     }
 }
@@ -48,12 +50,12 @@ void handle_input(env_t *head, int *last_exit_status, char **env)
 int main(int ac, char **av, char **env)
 {
     env_t *head = def_linked_list(env[0], 0, env);
-    int last_exit_status = 0;
+    int exit_status = 0;
 
     (void)ac;
     (void)av;
     signal(SIGINT, handle_ctr_c);
-    handle_input(head, &last_exit_status, env);
+    handle_input(head, &exit_status, env);
     free_list(head);
-    return last_exit_status;
+    return exit_status;
 }
