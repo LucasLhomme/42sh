@@ -19,6 +19,7 @@ const builtin_t builtin[] = {
     {"exit", my_exit},
     {"setenv", my_setenv},
     {"unsetenv", my_unsetenv},
+    {"echo", my_echo},
     {NULL, NULL}
 };
 
@@ -28,7 +29,7 @@ int is_builtin(env_t *head, char **args, char **env, int *last_exit_status)
         return 0;
     for (int i = 0; builtin[i].command != NULL; i++) {
         if (my_strcmp(args[0], builtin[i].command) == 0) {
-            *last_exit_status = builtin[i].function(args, head, env);
+            *last_exit_status = builtin[i].function(args, head, env, last_exit_status);
             return 1;
         }
     }

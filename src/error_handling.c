@@ -16,7 +16,8 @@
 void handle_ctr_c(int sig)
 {
     if (sig == SIGINT) {
-        write(1, "\n$> ", 4);
+        printf("\n");
+        print_prompt();
     }
 }
 

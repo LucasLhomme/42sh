@@ -55,6 +55,7 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(SRC_DIR)/get_args.c \
 				$(SRC_DIR)/main.c \
 				$(SRC_DIR)/print_prompt.c \
+				$(BUILTIN_DIR)/echo.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 
