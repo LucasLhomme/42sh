@@ -57,7 +57,8 @@ SRC		=	my_putstr.c \
 			my_remove_char.c \
 			len_tab.c \
 			my_strchr.c \
-			is_str_alnum.c
+			is_str_alnum.c \
+			concatene_tab.c \
 
 OBJ		=	$(SRC:.c=.o)
 

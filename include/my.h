@@ -136,4 +136,6 @@ int my_isalnum_char(char c);
 
 int is_alpha(char c);
 
+char *cat_tab(char **tab);
+
 #endif
