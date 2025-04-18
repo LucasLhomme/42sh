@@ -83,28 +83,28 @@ static void free_if_necessary(char *cmd_path, char *original_cmd)
     }
 }
 
-static void handle_parent_process(pid_t pid, int *last_exit_status,
+static void handle_parent_process(pid_t pid, int *exit_status,
     char *cmd_path, char *original_cmd)
 {
     int status;
 
     waitpid(pid, &status, 0);
     if (WIFEXITED(status)) {
-        *last_exit_status = WEXITSTATUS(status);
+        *exit_status = WEXITSTATUS(status);
     }
     free_if_necessary(cmd_path, original_cmd);
 }
 
-int handle_execution_failure(char *cmd_path, char *cmd, int *last_exit_status)
+int handle_execution_failure(char *cmd_path, char *cmd, int *exit_status)
 {
     if ((my_strcmp(cmd, ">") == 0) || (my_strcmp(cmd, ">>") == 0) ||
         (my_strcmp(cmd, "<") == 0)) {
         my_putstrerror("Missing name for redirect.\n");
-        *last_exit_status = 1;
+        *exit_status = 1;
     }
     print_error(cmd, "Command not found.");
     free_if_necessary(cmd_path, cmd);
-    return *last_exit_status;
+    return *exit_status;
 }
 
 pid_t create_child_process(char *cmd_path, char **args, env_t *head)
@@ -125,21 +125,21 @@ pid_t create_child_process(char *cmd_path, char **args, env_t *head)
     return pid;
 }
 
-void execute_command(char **args, env_t *head, int *last_exit_status)
+void execute_command(char **args, env_t *head, int *exit_status)
 {
     char *cmd_path = NULL;
     pid_t pid = {0};
 
-    if (is_command(head, args, last_exit_status) == 1)
+    if (is_command(head, args, exit_status) == 1)
         return;
     if (is_backtick(args, 0) != 0)
         backtick_handle(args, last_exit_status);
     cmd_path = resolve_command_path(args, head);
     if (!cmd_path) {
-        handle_execution_failure(cmd_path, args[0], last_exit_status);
+        handle_execution_failure(cmd_path, args[0], exit_status);
         return;
     }
     pid = create_child_process(cmd_path, args, head);
     if (pid > 0)
-        handle_parent_process(pid, last_exit_status, cmd_path, args[0]);
+        handle_parent_process(pid, exit_status, cmd_path, args[0]);
 }

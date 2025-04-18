@@ -33,11 +33,12 @@ str_and_int_t *def_unsetenv(char **args, env_t *head, char **env)
     return bundle;
 }
 
-int my_unsetenv(char **args, env_t *head, char **env)
+int my_unsetenv(char **args, env_t *head, char **env, int *exit_status)
 {
     env_t *temp = NULL;
     str_and_int_t *bundle = def_unsetenv(args, head, env);
 
+    (void)exit_status;
     (void)env;
     if (!bundle)
         return 1;

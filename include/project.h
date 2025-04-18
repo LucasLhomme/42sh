@@ -45,12 +45,12 @@ typedef struct history {
 
 typedef struct builtin_s {
     char *command;
-    int (*function)(char **args, env_t *head, char **env);
+    int (*function)(char **args, env_t *head, char **env, int *exit_status);
 } builtin_t;
 
 typedef struct command_s {
     char *command;
-    int (*function)(char **args, env_t *head, int *last_exit_status);
+    int (*function)(char **args, env_t *head, int *exit_status);
 } command_t;
 
 typedef struct pipe_command {
@@ -71,21 +71,23 @@ typedef struct semicolon_s {
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);
 
-int my_cd(char **args, env_t *head, char **env);
+int my_cd(char **args, env_t *head, char **env, int *exit_status);
 
-int my_env(char **args, env_t *head, char **env);
+int my_env(char **args, env_t *head, char **env, int *exit_status);
 
-int my_exit(char **args, env_t *head, char **env);
+int my_exit(char **args, env_t *head, char **env, int *exit_statusv);
 
-int my_unsetenv(char **args, env_t *head, char **env);
+int my_unsetenv(char **args, env_t *head, char **env, int *exit_status);
 
-int my_setenv(char **args, env_t *head, char **env);
+int my_setenv(char **args, env_t *head, char **env, int *exit_status);
 
 env_t *home(env_t *head, pack_env_t *pack);
 
 env_t *casual_add(char *str, char *new_value, env_t *head);
 
 env_t *one_arg(env_t *head, char *arg);
+
+int my_echo(char **args, env_t *head, char **env, int *exit_status);
 
 
 // Linked list
@@ -114,23 +116,23 @@ void free_history(history_t *head);
 
 int exec_pipe_command(pipe_command_t *commands, env_t *env, int *exit_status);
 
-int is_piped_command(char **args, int *last_exit_status);
+int is_piped_command(char **args, int *exit_status);
 
 int is_semicolumn_command(char **args);
 
-void execute_command(char **args, env_t *head, int *last_exit_status);
+void execute_command(char **args, env_t *head, int *exit_status);
 
 int handle_semicolon(char **args, env_t *env, int *last_exit_status);
 
-int handle_pipes(char **args, env_t *head, int *last_exit_status);
+int handle_pipes(char **args, env_t *head, int *exit_status);
 
 int redirection(char **args);
 
-int is_command(env_t *head, char **args, int *last_exit_status);
+int is_command(env_t *head, char **args, int *exit_status);
 
 int is_backtick(char **args, int idx);
 
-int backtick_handle(char **args, int *last_exit_status);
+int backtick_handle(char **args, int *exit_status);
 
 
 // Error
@@ -143,6 +145,8 @@ void handle_ctr_c(int sig);
 
 
 // Get args
+
+void print_header(void);
 
 int print_prompt(void);
 

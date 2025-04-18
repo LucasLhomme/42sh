@@ -59,6 +59,7 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(SRC_DIR)/print_prompt.c \
 				$(HISTORY_DIR)/history_handling.c \
 				$(HISTORY_DIR)/linked_list_history.c \
+				$(BUILTIN_DIR)/echo.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

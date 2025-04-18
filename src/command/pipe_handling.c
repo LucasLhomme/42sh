@@ -12,12 +12,12 @@
 #include "project.h"
 #include "my.h"
 
-int is_piped_command(char **args, int *last_exit_status)
+int is_piped_command(char **args, int *exit_status)
 {
     for (int i = 0; args[i] != NULL; i++) {
         if (nb_char(args[i], '|') >= 2) {
             my_putstrerror("Invalid null command.\n");
-            *last_exit_status = 1;
+            *exit_status = 1;
             return 1;
         }
         if (my_strcmp(args[i], "|") == 0)
@@ -119,18 +119,18 @@ static void parse_pipe_arguments(char **args, pipe_command_t *commands)
     commands->cmd2[j] = NULL;
 }
 
-int handle_pipes(char **args, env_t *head, int *last_exit_status)
+int handle_pipes(char **args, env_t *head, int *exit_status)
 {
     pipe_command_t *commands = initialize_pipe_command();
 
     if (!commands || (args[0] && my_strcmp(args[0], "|") == 0)) {
         print_error(NULL, "Invalid null command.");
-        *last_exit_status = 1;
+        *exit_status = 1;
         free(commands);
         return 1;
     }
     parse_pipe_arguments(args, commands);
-    exec_pipe_command(commands, head, last_exit_status);
+    exec_pipe_command(commands, head, exit_status);
     free(commands);
     return 0;
 }

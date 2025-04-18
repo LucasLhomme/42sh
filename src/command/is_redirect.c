@@ -22,14 +22,6 @@ const command_t command[] = {
     {NULL, NULL}
 };
 
-static int is_good_command(char *command, char *arg)
-{
-    if (my_strcmp(arg, command) == 0) {
-        return 0;
-    }
-    return 1;
-}
-
 static int match_special_command(const char *arg)
 {
     for (int i = 0; command[i].command != NULL; i++) {
@@ -39,7 +31,7 @@ static int match_special_command(const char *arg)
     return -1;
 }
 
-int is_command(env_t *head, char **args, int *last_exit_status)
+int is_command(env_t *head, char **args, int *exit_status)
 {
     int index = 0;
 
@@ -48,7 +40,7 @@ int is_command(env_t *head, char **args, int *last_exit_status)
     for (int j = 0; args[j] != NULL; j++) {
         index = match_special_command(args[j]);
         if (index != -1) {
-            command[index].function(args, head, last_exit_status);
+            command[index].function(args, head, exit_status);
             return 1;
         }
     }
