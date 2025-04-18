@@ -30,7 +30,8 @@ void process_command(char *line, env_t *head, int *last_exit_status,
 void handle_input(env_t *head, int *last_exit_status, char **env)
 {
     char *line;
-
+    if (isatty(STDIN_FILENO) == 1)
+        print_header();
     while (1) {
         line = read_line();
         if (!line) {

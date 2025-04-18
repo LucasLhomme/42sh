@@ -137,6 +137,8 @@ void handle_ctr_c(int sig);
 
 // Get args
 
+void print_header(void);
+
 int print_prompt(void);
 
 char *read_line(void);
