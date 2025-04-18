@@ -23,7 +23,9 @@ history_t *add_command(history_t *head, char *command)
 
     if (node == NULL)
         return NULL;
-    node->command = command;
+    node->command = strdup(command);
+    if (!node->command)
+        return NULL;
     node->idx = idx;
     node->next = NULL;
     if (!head)
@@ -38,11 +40,8 @@ history_t *add_command(history_t *head, char *command)
 
 void print_history(history_t *head)
 {
-    printf("ya quoi meme mtn \n");
-    if (head == NULL) {
-        printf("hmmmmmmmmmmmmm\n");
+    if (head == NULL)
         return;
-    }
     while (head != NULL) {
         printf("%s\n", head->command);
         head = head->next;

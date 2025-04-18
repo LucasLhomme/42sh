@@ -14,28 +14,17 @@
 int history_add(char *line)
 {
     static history_t *head = NULL;
-    static int i = 0;
-
     char **line_tab = my_str_to_word_array(line);
 
+    if (line_tab == NULL || line_tab[0] == NULL)
+        return 0;
     if (strcmp(line_tab[0], "history") == 0) {
-        if (!head) {
-            printf("ya quoi  la ptn\n");
-            return 1;
-        }
-        else {
-            print_history(head);
-            return 1;
-        }
+        print_history(head);
+        return 1;
     }
-    if (i == 0) {
+    if (!head)
         head = def_linked_list_history(line);
-        i++;
-    }
-    else {
-        printf("bah alors\n");
-        add_command(head, line);
-    }
-
+    else
+        head = add_command(head, line);
     return 0;
 }
