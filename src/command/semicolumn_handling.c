@@ -103,14 +103,14 @@ static void parse_semicolumn_arguments(char **args, semicolumn_t *commands)
     commands->cmd2[j] = NULL;
 }
 
-int semicolumn_handle(char **args, env_t *head, int *last_exit_status)
+int semicolumn_handle(char **args, env_t *head, int *exit_status)
 {
     semicolumn_t *commands = initialize_semicolumn_command();
 
     if (!commands)
         return 1;
     parse_semicolumn_arguments(args, commands);
-    exec_semicolumn_command(commands, head, last_exit_status);
+    exec_semicolumn_command(commands, head, exit_status);
     free(commands);
     return 0;
 }

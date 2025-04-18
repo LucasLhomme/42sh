@@ -23,13 +23,13 @@ const builtin_t builtin[] = {
     {NULL, NULL}
 };
 
-int is_builtin(env_t *head, char **args, char **env, int *last_exit_status)
+int is_builtin(env_t *head, char **args, char **env, int *exit_status)
 {
     if (!args || !args[0])
         return 0;
     for (int i = 0; builtin[i].command != NULL; i++) {
         if (my_strcmp(args[0], builtin[i].command) == 0) {
-            *last_exit_status = builtin[i].function(args, head, env, last_exit_status);
+            *exit_status = builtin[i].function(args, head, env, exit_status);
             return 1;
         }
     }

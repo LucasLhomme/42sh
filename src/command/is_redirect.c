@@ -39,7 +39,7 @@ static int match_special_command(const char *arg)
     return -1;
 }
 
-int is_command(env_t *head, char **args, int *last_exit_status)
+int is_command(env_t *head, char **args, int *exit_status)
 {
     int index = 0;
 
@@ -48,7 +48,7 @@ int is_command(env_t *head, char **args, int *last_exit_status)
     for (int j = 0; args[j] != NULL; j++) {
         index = match_special_command(args[j]);
         if (index != -1) {
-            command[index].function(args, head, last_exit_status);
+            command[index].function(args, head, exit_status);
             return 1;
         }
     }

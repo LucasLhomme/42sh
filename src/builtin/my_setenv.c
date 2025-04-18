@@ -114,11 +114,11 @@ static int add_or_update_env_var(char **args, env_t *head)
     }
 }
 
-int my_setenv(char **args, env_t *head, char **env, int *last_exit_status)
+int my_setenv(char **args, env_t *head, char **env, int *exit_status)
 {
-    (void)last_exit_status;
     int len_args = len_tab(args);
 
+    (void)exit_status;
     if (initialize_env(&head, env))
         return 1;
     if (my_strcmp(args[0], "setenv") != 0)

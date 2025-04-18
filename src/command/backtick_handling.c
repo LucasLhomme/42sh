@@ -98,13 +98,14 @@ void free_args(char **args)
     free(args);
 }
 
-int backtick_handle(char **args, int *last_exit_status)
+int backtick_handle(char **args, int *exit_status)
 {
-    (void)last_exit_status;
+    char *new_arg = NULL;
 
+    (void)exit_status;
     for (int i = 0; args[i] != NULL; i++) {
         if (strchr(args[i], '`')) {
-            char *new_arg = handle_backtick(args[i]);
+            new_arg = handle_backtick(args[i]);
             args[i] = new_arg;
         }
     }

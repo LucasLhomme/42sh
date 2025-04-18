@@ -26,11 +26,11 @@ static int exit_loop(char *arg)
     return 0;
 }
 
-int my_exit(char **args, env_t *head, char **env, int *last_exit_status)
+int my_exit(char **args, env_t *head, char **env, int *exit_status)
 {
     int status = 0;
 
-    (void)last_exit_status;
+    (void)exit_status;
     (void)env;
     (void)head;
     if (args[1]) {

@@ -66,14 +66,13 @@ int handle_cd_errors(char *new_dir, int file_check)
     return 0;
 }
 
-int my_cd(char **args, env_t *head, char **env, int *last_exit_status)
+int my_cd(char **args, env_t *head, char **env, int *exit_status)
 {
     static char *history[2] = {NULL, NULL};
     char cwd[1024];
     char *new_dir = NULL;
     int file_check = 0;
 
-    (void)last_exit_status;
     (void)env;
     if (!history[1] && getcwd(cwd, sizeof(cwd)))
         history[1] = my_strdup(cwd);
