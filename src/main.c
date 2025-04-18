@@ -29,18 +29,21 @@ void process_command(char *line, env_t *head, int *last_exit_status,
 
 void handle_input(env_t *head, int *last_exit_status, char **env)
 {
-    char *line;
+    char *line = NULL;
+    int result = 0;
 
     while (1) {
         line = read_line();
         if (!line) {
             return;
         }
+        result = history_add(line);
         if (line[0] == '\0') {
             free(line);
             continue;
         }
-        process_command(line, head, last_exit_status, env);
+        if (result == 0)
+            process_command(line, head, last_exit_status, env);
         free(line);
     }
 }

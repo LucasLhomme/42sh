@@ -33,6 +33,8 @@ ENV_DIR		=	src/env
 
 INCLUDE_DIR	=	include/
 
+HISTORY_DIR	=	src/history
+
 LIB			=	lib/libmy.a
 
 SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
@@ -55,6 +57,8 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(SRC_DIR)/get_args.c \
 				$(SRC_DIR)/main.c \
 				$(SRC_DIR)/print_prompt.c \
+				$(HISTORY_DIR)/history_handling.c \
+				$(HISTORY_DIR)/linked_list_history.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

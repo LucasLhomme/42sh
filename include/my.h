@@ -138,4 +138,6 @@ int is_alpha(char c);
 
 char *cat_tab(char **tab);
 
+char **my_str_to_word_array_advanced(char *str, char *extra_chars);
+
 #endif

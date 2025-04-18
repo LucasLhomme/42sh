@@ -59,6 +59,7 @@ SRC		=	my_putstr.c \
 			my_strchr.c \
 			is_str_alnum.c \
 			concatene_tab.c \
+			my_str_to_word_array_advanced.c \
 
 OBJ		=	$(SRC:.c=.o)
 
