@@ -137,4 +137,6 @@ char *read_line(void);
 
 void parse_args(char *line, char **args, int size);
 
+void free_args(char **args);
+
 #endif
