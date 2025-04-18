@@ -39,7 +39,7 @@ typedef struct env {
 
 typedef struct builtin_s {
     char *command;
-    int (*function)(char **args, env_t *head, char **env);
+    int (*function)(char **args, env_t *head, char **env, int *last_exit_status);
 } builtin_t;
 
 typedef struct pipe_command {
@@ -64,21 +64,23 @@ typedef struct semicolumn_s {
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);
 
-int my_cd(char **args, env_t *head, char **env);
+int my_cd(char **args, env_t *head, char **env, int *last_exit_status);
 
-int my_env(char **args, env_t *head, char **env);
+int my_env(char **args, env_t *head, char **env, int *last_exit_status);
 
-int my_exit(char **args, env_t *head, char **env);
+int my_exit(char **args, env_t *head, char **env, int *last_exit_statusv);
 
-int my_unsetenv(char **args, env_t *head, char **env);
+int my_unsetenv(char **args, env_t *head, char **env, int *last_exit_status);
 
-int my_setenv(char **args, env_t *head, char **env);
+int my_setenv(char **args, env_t *head, char **env, int *last_exit_status);
 
 env_t *home(env_t *head, pack_env_t *pack);
 
 env_t *casual_add(char *str, char *new_value, env_t *head);
 
 env_t *one_arg(env_t *head, char *arg);
+
+int my_echo(char **args, env_t *head, char **env, int *last_exit_status);
 
 
 // Linked list
