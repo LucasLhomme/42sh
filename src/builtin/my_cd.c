@@ -66,6 +66,12 @@ int handle_cd_errors(char *new_dir, int file_check)
     return 0;
 }
 
+static void use_useless_variables(char **env, int *exit_status)
+{
+    (void)env;
+    (void)exit_status;
+}
+
 int my_cd(char **args, env_t *head, char **env, int *exit_status)
 {
     static char *history[2] = {NULL, NULL};
@@ -73,7 +79,7 @@ int my_cd(char **args, env_t *head, char **env, int *exit_status)
     char *new_dir = NULL;
     int file_check = 0;
 
-    (void)env;
+    use_useless_variables(env, exit_status);
     if (!history[1] && getcwd(cwd, sizeof(cwd)))
         history[1] = my_strdup(cwd);
     if (len_tab(args) > 1) {

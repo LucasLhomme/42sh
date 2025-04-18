@@ -22,14 +22,6 @@ const command_t command[] = {
     {NULL, NULL}
 };
 
-static int is_good_command(char *command, char *arg)
-{
-    if (my_strcmp(arg, command) == 0) {
-        return 0;
-    }
-    return 1;
-}
-
 static int match_special_command(const char *arg)
 {
     for (int i = 0; command[i].command != NULL; i++) {
