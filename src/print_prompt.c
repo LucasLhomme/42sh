@@ -55,8 +55,8 @@ int print_prompt(void)
 
     if (!user || !dir)
         return 84;
-    printf("\033[4m\033[1m\033[92m[%s", user);
-    printf("\033[94m@\033[93m%s]\033[92m\033[0m\033[1m\033[92m>\033[37m", dir);
+    my_printf("\033[4m\033[1m\033[92m[%s", user);
+    my_printf("\033[94m@\033[93m%s]\033[92m\033[0m\033[1m\033[92m>\033[0m", dir);
     free_prompt(dir, user);
     return 0;
 }

@@ -15,8 +15,9 @@
 #include "project.h"
 #include "my.h"
 
-int my_env(char **args, env_t *head, char **env)
+int my_env(char **args, env_t *head, char **env, int *last_exit_status)
 {
+    (void)last_exit_status;
     (void)args;
     (void)env;
     if (!head)
