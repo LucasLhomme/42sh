@@ -37,6 +37,12 @@ typedef struct env {
     struct env *next;
 } env_t;
 
+typedef struct history {
+    char *command;
+    int idx;
+    struct history *next;
+} history_t;
+
 typedef struct builtin_s {
     char *command;
     int (*function)(char **args, env_t *head, char **env, int *exit_status);
@@ -98,6 +104,13 @@ void free_env_array(char **env_array);
 
 char **convert_env_to_array(env_t *head);
 
+history_t *def_linked_list_history(char *command);
+
+history_t *add_command(history_t *head, char *command);
+
+void print_history(history_t *head);
+
+void free_history(history_t *head);
 
 // Exec function
 
@@ -142,5 +155,9 @@ char *read_line(void);
 void parse_args(char *line, char **args, int size);
 
 void free_args(char **args);
+
+// History
+
+int history_add(char *line);
 
 #endif

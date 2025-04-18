@@ -29,7 +29,8 @@ void process_command(char *line, env_t *head, int *exit_status,
 
 void handle_input(env_t *head, int *exit_status, char **env)
 {
-    char *line;
+    char *line = NULL;
+    int result = 0;
 
     if (isatty(STDIN_FILENO) == 1)
         print_header();
@@ -38,11 +39,13 @@ void handle_input(env_t *head, int *exit_status, char **env)
         if (!line) {
             return;
         }
+        result = history_add(line);
         if (line[0] == '\0') {
             free(line);
             continue;
         }
-        process_command(line, head, exit_status, env);
+        if (result == 0)
+            process_command(line, head, last_exit_status, env);
         free(line);
     }
 }
