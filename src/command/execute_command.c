@@ -132,9 +132,9 @@ void execute_command(char **args, env_t *head, int *last_exit_status)
 
     if (is_command(head, args, last_exit_status) == 1)
         return;
-    // if (is_backtick(args, 0) != 0) {
-    //     backtick_handle(args, last_exit_status);
-    // }
+    if (is_backtick(args, 0) != 0) {
+        backtick_handle(args, last_exit_status);
+    }
     cmd_path = resolve_command_path(args, head);
     if (!cmd_path) {
         handle_execution_failure(cmd_path, args[0], last_exit_status);
