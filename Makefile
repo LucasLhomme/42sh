@@ -46,7 +46,7 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(COMMAND_DIR)/parse_command.c \
 				$(COMMAND_DIR)/pipe_handling.c \
 				$(COMMAND_DIR)/redirection_handling.c \
-				$(COMMAND_DIR)/semicolumn_handling.c \
+				$(COMMAND_DIR)/semicolon_handling.c \
 				$(COMMAND_DIR)/is_redirect.c \
 				$(COMMAND_DIR)/backtick_handling.c \
 				$(ENV_DIR)/env_array.c \
