@@ -122,7 +122,7 @@ int is_semicolumn_command(char **args);
 
 void execute_command(char **args, env_t *head, int *exit_status);
 
-int handle_semicolon(char **args, env_t *env, int *last_exit_status);
+int handle_semicolon(char **args, env_t *env, int *exit_status);
 
 int handle_pipes(char **args, env_t *head, int *exit_status);
 
