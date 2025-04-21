@@ -20,6 +20,8 @@ const builtin_t builtin[] = {
     {"setenv", my_setenv},
     {"unsetenv", my_unsetenv},
     {"echo", my_echo},
+    {"which", my_which},
+    {"where", my_where},
     {NULL, NULL}
 };
 
