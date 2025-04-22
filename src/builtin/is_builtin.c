@@ -28,7 +28,7 @@ int is_builtin(env_t *head, char **args, char **env, int *exit_status)
 {
     for (int i = 0; builtin[i].command != NULL; i++) {
         if (my_strstr(args[0], builtin[i].command) != NULL) {
-            builtin[i].function(env, head, args, exit_status);
+            builtin[i].function(args, head, env, exit_status);
             return 1;
         }
     }
