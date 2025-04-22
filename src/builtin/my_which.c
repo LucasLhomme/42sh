@@ -73,8 +73,10 @@ static int which_validate(char **args, env_t *head, char ***env_array)
         return 1;
     }
     *env_array = convert_env_to_array(head);
-    if (!*env_array)
+    if (!*env_array) {
+        printf("%s: Command not found.", args[1]);
         return 84;
+    }
     return 0;
 }
 
