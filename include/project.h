@@ -17,6 +17,16 @@
     #include <sys/stat.h>
     #include "struct_word_array.h"
 
+
+// define keys
+
+    #define KEY_LEFT 0x445B1B
+    #define KEY_RIGHT 0x435B1B
+    #define KEY_UP 0x415B1B
+    #define KEY_DOWN 0x425B1B
+    #define KEY_BACKSPACE 127
+    #define KEY_DEL 0x7E335B1B
+
 // Struct
 
 typedef struct str_and_int_s {
@@ -89,6 +99,9 @@ env_t *one_arg(env_t *head, char *arg);
 
 int my_echo(char **args, env_t *head, char **env, int *exit_status);
 
+int my_which(char **args, env_t *head, char **env, int *exit_status);
+
+int my_where(char **args, env_t *head, char **env, int *exit_status);
 
 // Linked list
 
@@ -159,5 +172,15 @@ void free_args(char **args);
 // History
 
 int history_add(char *line);
+
+//utils
+
+void write_char(int *pos, int *len);
+char *remove_first_char(const char *str);
+void parse_args(char *line, char **args, int size);
+void handle_ctr_c(int sig);
+void print_error_reverse(const char *cmd, const char *message, int status);
+void print_error(const char *cmd, const char *message);
+void my_putstrerror(const char *str);
 
 #endif

@@ -1,25 +1,10 @@
 /*
 ** EPITECH PROJECT, 2025
-** B-PSU-200-LIL-2-1-minishell1-joseph.birck
+** B-PSU-200-LIL-2-1-42sh-lucas.lhomme
 ** File description:
-** error_handling
+** print_error
 */
-
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <signal.h>
 #include "my.h"
-#include "project.h"
-
-void handle_ctr_c(int sig)
-{
-    if (sig == SIGINT) {
-        printf("\n");
-        print_prompt();
-    }
-}
 
 void my_putstrerror(const char *str)
 {
@@ -36,20 +21,6 @@ void print_error(const char *cmd, const char *message)
     }
     my_putstrerror(message);
     my_putstrerror("\n");
-}
-
-char *remove_first_char(const char *str)
-{
-    int len = my_strlen(str);
-    char *src = malloc(sizeof(char) * len);
-    int y = 0;
-
-    for (int i = 1; str[i] != '\0'; i++) {
-        src[y] = str[i];
-        y++;
-    }
-    src[y] = '\0';
-    return src;
 }
 
 void print_error_reverse(const char *cmd, const char *message, int status)

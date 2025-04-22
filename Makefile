@@ -24,42 +24,50 @@ NAME	=	42sh
 LIBDIR	=	./lib/my
 
 SRC_DIR		=	src
-
-BUILTIN_DIR	=	src/builtin
-
-COMMAND_DIR	=	src/command
-
-ENV_DIR		=	src/env
-
+UTILS_DIR	=	$(SRC_DIR)/utils
+SHELL_DIR	=	$(SRC_DIR)/shell
+REDIR_DIR	=	$(SHELL_DIR)/redirection
+ENV_DIR		=	$(SRC_DIR)/env
+CMD_DIR		=	$(SRC_DIR)/command
+BUILTIN_DIR	=	$(CMD_DIR)/builtin
+HISTORY_DIR	=	$(BUILTIN_DIR)/history
+CD_DIR		=	$(BUILTIN_DIR)/cd
+ENV_BUILTIN_DIR	=	$(BUILTIN_DIR)/env
+ECHO_DIR	=	$(BUILTIN_DIR)/echo
+EXIT_DIR	=	$(BUILTIN_DIR)/exit
+SHELL_PROG_DIR	=	$(BUILTIN_DIR)/shell_prog
 INCLUDE_DIR	=	include/
+LIB		=	lib/libmy.a
 
-HISTORY_DIR	=	src/history
-
-LIB			=	lib/libmy.a
-
-SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
-				$(BUILTIN_DIR)/my_env.c \
-				$(BUILTIN_DIR)/my_exit.c \
-				$(BUILTIN_DIR)/my_setenv.c \
-				$(BUILTIN_DIR)/my_unsetenv.c \
-				$(BUILTIN_DIR)/is_builtin.c \
-				$(BUILTIN_DIR)/setenv_case.c \
-				$(COMMAND_DIR)/execute_command.c \
-				$(COMMAND_DIR)/parse_command.c \
-				$(COMMAND_DIR)/pipe_handling.c \
-				$(COMMAND_DIR)/redirection_handling.c \
-				$(COMMAND_DIR)/semicolon_handling.c \
-				$(COMMAND_DIR)/is_redirect.c \
-				$(COMMAND_DIR)/backtick_handling.c \
-				$(ENV_DIR)/env_array.c \
-				$(ENV_DIR)/linked_list_env.c \
-				$(SRC_DIR)/error_handling.c \
-				$(SRC_DIR)/get_args.c \
-				$(SRC_DIR)/main.c \
-				$(SRC_DIR)/print_prompt.c \
-				$(HISTORY_DIR)/history_handling.c \
-				$(HISTORY_DIR)/linked_list_history.c \
-				$(BUILTIN_DIR)/echo.c \
+SRC_FILES	=	$(CD_DIR)/my_cd.c \
+			$(ENV_BUILTIN_DIR)/my_env.c \
+			$(EXIT_DIR)/my_exit.c \
+			$(ENV_BUILTIN_DIR)/my_setenv.c \
+			$(ENV_BUILTIN_DIR)/my_unsetenv.c \
+			$(BUILTIN_DIR)/is_builtin.c \
+			$(ENV_BUILTIN_DIR)/setenv_case.c \
+			$(CMD_DIR)/execute_command.c \
+			$(CMD_DIR)/parse_command.c \
+			$(REDIR_DIR)/pipe_handling.c \
+			$(REDIR_DIR)/redirection_handling.c \
+			$(REDIR_DIR)/semicolon_handling.c \
+			$(REDIR_DIR)/is_redirect.c \
+			$(REDIR_DIR)/backtick_handling.c \
+			$(ENV_DIR)/env_array.c \
+			$(ENV_DIR)/linked_list_env.c \
+			$(UTILS_DIR)/print_error.c \
+			$(UTILS_DIR)/get_args.c \
+			$(SRC_DIR)/main.c \
+			$(SHELL_DIR)/print_prompt.c \
+			$(SHELL_DIR)/read_line.c \
+			$(HISTORY_DIR)/history_handling.c \
+			$(HISTORY_DIR)/linked_list_history.c \
+			$(ECHO_DIR)/echo.c \
+			$(UTILS_DIR)/write_char.c \
+			$(UTILS_DIR)/remove_first_char.c \
+			$(UTILS_DIR)/handle_ctr_c.c \
+			$(SHELL_PROG_DIR)/my_which.c \
+			$(SHELL_PROG_DIR)/my_where.c
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

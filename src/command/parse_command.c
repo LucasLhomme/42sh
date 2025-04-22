@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "my.h"
-#include "project.h"
 
 int count_words(const char *str)
 {
