@@ -176,5 +176,11 @@ int history_add(char *line);
 //utils
 
 void write_char(int *pos, int *len);
+char *remove_first_char(const char *str);
+void parse_args(char *line, char **args, int size);
+void handle_ctr_c(int sig);
+void print_error_reverse(const char *cmd, const char *message, int status);
+void print_error(const char *cmd, const char *message);
+void my_putstrerror(const char *str);
 
 #endif

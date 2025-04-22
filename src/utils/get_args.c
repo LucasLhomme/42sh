@@ -9,9 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <signal.h>
 #include <termios.h>
-#include "my.h"
 #include "project.h"
 
 void parse_args(char *line, char **args, int size)
