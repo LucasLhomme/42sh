@@ -89,6 +89,9 @@ env_t *one_arg(env_t *head, char *arg);
 
 int my_echo(char **args, env_t *head, char **env, int *exit_status);
 
+int my_which(char **args, env_t *head, char **env, int *exit_status);
+
+int my_where(char **args, env_t *head, char **env, int *exit_status);
 
 // Linked list
 
