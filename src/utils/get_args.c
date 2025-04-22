@@ -12,14 +12,21 @@
 #include <termios.h>
 #include "project.h"
 
+static void parse_token(char *token, char **args, int *argc, int size)
+{
+    while (*token && *argc < size) {
+        if (semicolon_handling(args, argc, &token))
+            break;
+    }
+}
+
 void parse_args(char *line, char **args, int size)
 {
     int argc = 0;
     char *token = strtok(line, " \t");
 
     while (token && argc < size) {
-        args[argc] = token;
-        argc++;
+        parse_token(token, args, &argc, size);
         token = strtok(NULL, " \t");
     }
     args[argc] = NULL;
