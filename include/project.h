@@ -170,4 +170,8 @@ void free_args(char **args);
 
 int history_add(char *line);
 
+//utils
+
+void write_char(int *pos, int *len);
+
 #endif

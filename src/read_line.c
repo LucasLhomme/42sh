@@ -62,11 +62,9 @@ void insert_char(char *line, char c, int *pos, int *len)
         (*pos)++;
         if (*pos < *len) {
             write(1, &line[*pos - 1], *len - *pos + 1);
-            for (int i = 0; i < *len - *pos; i++)
-                write(1, "\b", 1);
-        } else {
+            write_char(pos, len);
+        } else
             write(1, &c, 1);
-        }
     }
 }
 
@@ -78,32 +76,60 @@ static int init_line(char **line, struct termios *oldt)
     memset(*line, 0, 1024);
     set_raw_mode(oldt);
     if (isatty(STDIN_FILENO))
-        write(1, "$> ", 3);
+        print_prompt();
     return 0;
+}
+
+static int handle_escape(char seq[2], int *pos, int len)
+{
+    if (read(STDIN_FILENO, &seq[0], 1) != 1)
+        return -1;
+    if (read(STDIN_FILENO, &seq[1], 1) != 1)
+        return -1;
+    handle_arrow_keys(seq, pos, len);
+    return 1;
+}
+
+static int check_character(char c, char *line, int *pos, int *len)
+{
+    char seq[2];
+
+    if (c == '\n') {
+        write(1, "\n", 1);
+        return 0;
+    }
+    if (c == '\033')
+        return handle_escape(seq, pos, *len);
+    if (c == KEY_BACKSPACE || c == '\b') {
+        handle_backspace(line, pos, len);
+        return 1;
+    }
+    if (c >= 32 && c <= 126) {
+        insert_char(line, c, pos, len);
+        return 1;
+    }
+    return 1;
 }
 
 static int read_character(char *line, int *pos, int *len)
 {
     char c;
-    char seq[2];
 
     if (read(STDIN_FILENO, &c, 1) != 1)
         return -1;
-    if (c == '\n') {
-        write(1, "\n", 1);
-        return 0;
-    } else if (c == '\033') {
-        if (read(STDIN_FILENO, &seq[0], 1) != 1)
-            return -1;
-        if (read(STDIN_FILENO, &seq[1], 1) != 1)
-            return -1;
-        handle_arrow_keys(seq, pos, *len);
-    } else if (c == KEY_BACKSPACE || c == '\b') {
-        handle_backspace(line, pos, len);
-    } else if (c >= 32 && c <= 126) {
-        insert_char(line, c, pos, len);
+    return check_character(c, line, pos, len);
+}
+
+static char *finalize_line(char *line, int len, int status,
+    struct termios *oldt)
+{
+    tcsetattr(STDIN_FILENO, TCSANOW, oldt);
+    if (len == 0 && status == -1) {
+        free(line);
+        return NULL;
     }
-    return 1;
+    line[len] = '\0';
+    return line;
 }
 
 char *read_line(void)
@@ -118,11 +144,5 @@ char *read_line(void)
         return NULL;
     while (status > 0)
         status = read_character(line, &pos, &len);
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    if (len == 0 && status == -1) {
-        free(line);
-        return NULL;
-    }
-    line[len] = '\0';
-    return line;
+    return finalize_line(line, len, status, &oldt);
 }
