@@ -62,6 +62,8 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(HISTORY_DIR)/linked_list_history.c \
 				$(BUILTIN_DIR)/echo.c \
 				$(SRC_DIR)/utils.c \
+				$(BUILTIN_DIR)/my_which.c \
+				$(BUILTIN_DIR)/my_where.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

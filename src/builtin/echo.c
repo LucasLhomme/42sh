@@ -4,8 +4,7 @@
 ** File description:
 ** handle echo command
 */
-
-#include "my.h"
+#include <string.h>
 #include "project.h"
 
 int my_echo(char **args, env_t *head, char **env, int *exit_status)
