@@ -17,6 +17,16 @@
     #include <sys/stat.h>
     #include "struct_word_array.h"
 
+
+// define keys
+
+    #define KEY_LEFT 0x445B1B
+    #define KEY_RIGHT 0x435B1B
+    #define KEY_UP 0x415B1B
+    #define KEY_DOWN 0x425B1B
+    #define KEY_BACKSPACE 127
+    #define KEY_DEL 0x7E335B1B
+
 // Struct
 
 typedef struct str_and_int_s {
@@ -162,5 +172,9 @@ void free_args(char **args);
 // History
 
 int history_add(char *line);
+
+//utils
+
+void write_char(int *pos, int *len);
 
 #endif

@@ -57,9 +57,11 @@ SRC_FILES	=	$(BUILTIN_DIR)/my_cd.c \
 				$(SRC_DIR)/get_args.c \
 				$(SRC_DIR)/main.c \
 				$(SRC_DIR)/print_prompt.c \
+				$(SRC_DIR)/read_line.c \
 				$(HISTORY_DIR)/history_handling.c \
 				$(HISTORY_DIR)/linked_list_history.c \
 				$(BUILTIN_DIR)/echo.c \
+				$(SRC_DIR)/utils.c \
 				$(BUILTIN_DIR)/my_which.c \
 				$(BUILTIN_DIR)/my_where.c \
 
