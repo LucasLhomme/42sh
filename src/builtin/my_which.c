@@ -6,7 +6,8 @@
 */
 
 #include "project.h"
-#include "my.h"
+#include <string.h>
+#include <unistd.h>
 
 static char *get_env_path(char **shell_env)
 {

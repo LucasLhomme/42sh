@@ -9,12 +9,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "my.h"
 #include "project.h"
-#include <signal.h>
 
 const command_t command[] = {
     {"|", handle_pipes},

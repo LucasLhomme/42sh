@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <signal.h>
 #include "my.h"
 #include "project.h"
 
@@ -27,11 +26,9 @@ const builtin_t builtin[] = {
 
 int is_builtin(env_t *head, char **args, char **env, int *exit_status)
 {
-    if (!args || !args[0])
-        return 0;
     for (int i = 0; builtin[i].command != NULL; i++) {
-        if (my_strcmp(args[0], builtin[i].command) == 0) {
-            *exit_status = builtin[i].function(args, head, env, exit_status);
+        if (my_strstr(args[0], builtin[i].command) != NULL) {
+            builtin[i].function(env, head, args, exit_status);
             return 1;
         }
     }

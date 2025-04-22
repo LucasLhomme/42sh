@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <signal.h>
 #include "my.h"
 #include "project.h"
 

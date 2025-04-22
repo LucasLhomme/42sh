@@ -6,14 +6,9 @@
 */
 
 #include <unistd.h>
-#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <string.h>
-#include <stdio.h>
 #include "project.h"
-#include "my.h"
 
 int my_env(char **args, env_t *head, char **env, int *exit_status)
 {
