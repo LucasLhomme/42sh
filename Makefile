@@ -51,6 +51,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(REDIR_DIR)/pipe_handling.c \
 			$(REDIR_DIR)/redirection_handling.c \
 			$(REDIR_DIR)/semicolon_handling.c \
+			$(REDIR_DIR)/double_ampersand_handling.c \
 			$(REDIR_DIR)/is_redirect.c \
 			$(REDIR_DIR)/backtick_handling.c \
 			$(ENV_DIR)/env_array.c \

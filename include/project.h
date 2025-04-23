@@ -133,6 +133,13 @@ int is_piped_command(char **args, int *exit_status);
 
 int is_semicolumn_command(char **args);
 
+void execute_segment(char **args,
+    env_t *head, int *exit_status, separator_index_t *index);
+
+int handle_double_ampersand(char **args, env_t *head, int *exit_status);
+
+int double_ampersand_handling(char **args, int *nb_args, char **token_index);
+
 void execute_command(char **args, env_t *head, int *exit_status);
 
 int semicolon_handling(char **args, int *argc, char **token_ptr);
