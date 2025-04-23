@@ -14,6 +14,8 @@
 
 static int handle_no_semicolon(char **args, int *nb_args, char *token)
 {
+    if (!token)
+        return 1;
     args[*nb_args] = token;
     (*nb_args)++;
     return 1;
