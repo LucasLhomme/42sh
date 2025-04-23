@@ -16,9 +16,7 @@
 void process_command(char *line, env_t *head, int *exit_status,
     char **env)
 {
-    int nb_space = nb_char(line, ' ');
-    int nb_tab = nb_char(line, '\t');
-    int size = nb_tab + nb_space + 1;
+    int size = strlen(line) + 1;
     char *args[size];
 
     parse_args(line, args, size);
