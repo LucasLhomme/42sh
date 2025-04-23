@@ -67,7 +67,8 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/remove_first_char.c \
 			$(UTILS_DIR)/handle_ctr_c.c \
 			$(SHELL_PROG_DIR)/my_which.c \
-			$(SHELL_PROG_DIR)/my_where.c
+			$(SHELL_PROG_DIR)/my_where.c \
+			$(SHELL_DIR)/handle_ctrl.c
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

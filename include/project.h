@@ -183,4 +183,7 @@ void print_error_reverse(const char *cmd, const char *message, int status);
 void print_error(const char *cmd, const char *message);
 void my_putstrerror(const char *str);
 
+// Special inputs
+int check_ctrl(char c, char *line, int *pos, int *len);
+
 #endif
