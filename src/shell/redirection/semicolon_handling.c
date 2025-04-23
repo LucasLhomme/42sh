@@ -22,32 +22,32 @@ static int handle_no_semicolon(char **args, int *nb_args, char *token)
 }
 
 static void handle_semicolon_case(char **args,
-    int *nb_args, char **token_index, char *semicolon)
+    int *nb_args, char **current_token, char *semicolon)
 {
-    if (semicolon == *token_index) {
+    if (semicolon == *current_token) {
         args[*nb_args] = ";";
         (*nb_args)++;
-        (*token_index)++;
+        (*current_token)++;
     } else {
         *semicolon = '\0';
-        args[*nb_args] = *token_index;
+        args[*nb_args] = *current_token;
         (*nb_args)++;
         args[*nb_args] = ";";
         (*nb_args)++;
-        *token_index = semicolon + 1;
+        *current_token = semicolon + 1;
     }
 }
 
-int semicolon_handling(char **args, int *nb_args, char **token_index)
+int semicolon_handling(char **args, int *nb_args, char **current_token)
 {
-    char *token;
-    char *semicolon;
+    char *token = NULL;
+    char *semicolon = NULL;
 
-    token = *token_index;
+    token = *current_token;
     semicolon = strchr(token, ';');
     if (!semicolon)
         return handle_no_semicolon(args, nb_args, token);
-    handle_semicolon_case(args, nb_args, token_index, semicolon);
+    handle_semicolon_case(args, nb_args, current_token, semicolon);
     return 0;
 }
 
