@@ -47,7 +47,7 @@ static void clear_and_display(char *line, int remaining, int old_len)
 static int shift_line_content(char *line, int *pos, int *len, int *remaining)
 {
     int i;
-    
+
     if (*pos < *len) {
         *remaining = *len - *pos;
         for (i = 0; i < *remaining; i++)
@@ -77,6 +77,22 @@ static int handle_ctrl_u(char *line, int *pos, int *len)
     return 1;
 }
 
+static int handle_ctrl_y(char *line, int *pos, int *len)
+{
+    int i;
+    int old_len = *len;
+
+    if (*pos >= *len)
+        return 0;
+    line[*pos] = '\0';
+    for (i = *pos; i < old_len; i++)
+        write(STDOUT_FILENO, " ", 1);
+    for (i = *pos; i < old_len; i++)
+        write(STDOUT_FILENO, "\b", 1);
+    *len = *pos;
+    return 1;
+}
+
 int check_ctrl(char c, char *line, int *pos, int *len)
 {
     if (c == 12)
@@ -87,5 +103,7 @@ int check_ctrl(char c, char *line, int *pos, int *len)
         return handle_ctrl_e(pos, len);
     if (c == 21)
         return handle_ctrl_u(line, pos, len);
+    if (c == 25)
+        return handle_ctrl_y(line, pos, len);
     return 0;
 }
