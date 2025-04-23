@@ -35,25 +35,32 @@ static int handle_ctrl_e(int *pos, int *len)
 static int handle_ctrl_u(char *line, int *pos, int *len)
 {
     int i;
+    int old_len = *len;
 
     if (*pos <= 0)
         return 0;
     for (i = 0; i < *pos; i++)
         write(STDOUT_FILENO, "\b", 1);
-    for (i = 0; i < *pos; i++)
-        write(STDOUT_FILENO, " ", 1);
-    for (i = 0; i < *pos; i++)
-        write(STDOUT_FILENO, "\b", 1);
     if (*pos < *len) {
-        for (i = 0; i + *pos < *len; i++)
+        int remaining = *len - *pos;
+        for (i = 0; i < remaining; i++)
             line[i] = line[i + *pos];
         line[i] = '\0';
-        *len = *len - *pos;
+        write(STDOUT_FILENO, line, remaining);
+        for (i = remaining; i < old_len; i++)
+            write(STDOUT_FILENO, " ", 1);
+        for (i = remaining; i < old_len; i++)
+            write(STDOUT_FILENO, "\b", 1);
+        *len = remaining;
     } else {
-        *len = 0;
         line[0] = '\0';
+        for (i = 0; i < old_len; i++)
+            write(STDOUT_FILENO, " ", 1);
+        for (i = 0; i < old_len; i++)
+            write(STDOUT_FILENO, "\b", 1);
+        *len = 0;
     }
-    *pos = 0;
+    *pos = *len;
     return 1;
 }
 
