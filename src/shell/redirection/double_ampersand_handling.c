@@ -12,7 +12,7 @@
 #include "project.h"
 #include "my.h"
 
-static void execute_last_command(char **args,
+void execute_last_command(char **args,
     env_t *head, int *exit_status, separator_index_t *index)
 {
     for (int i = index->start; args[i] != NULL; i++) {

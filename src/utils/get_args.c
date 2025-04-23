@@ -39,6 +39,20 @@ static int spot_double_ampersand(char **token, char **args, int *argc)
     return 0;
 }
 
+static int spot_double_pipe(char **token, char **args, int *argc)
+{
+    char *sep = NULL;
+
+    if (strncmp(*token, "||", 2) == 0) {
+        sep = strdup("||");
+        args[*argc] = sep;
+        (*argc)++;
+        *token += 2;
+        return 1;
+    }
+    return 0;
+}
+
 static int spot_semicolon(char **token, char **args, int *argc)
 {
     char *sep = NULL;
@@ -66,6 +80,8 @@ static void spot_command(char **token, char **args, int *argc)
 static void parse_token(char *token, char **args, int *argc, int size)
 {
     while (*token && *argc < size) {
+        if (spot_double_pipe(&token, args, argc))
+            continue;
         if (spot_double_ampersand(&token, args, argc))
             continue;
         if (spot_semicolon(&token, args, argc))
