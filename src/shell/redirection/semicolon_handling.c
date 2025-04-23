@@ -51,7 +51,7 @@ int semicolon_handling(char **args, int *nb_args, char **current_token)
     return 0;
 }
 
-static void execute_segment(char **args,
+void execute_segment(char **args,
     env_t *head, int *exit_status, separator_index_t *index)
 {
     for (int i = index->start; i < index->end; i++) {

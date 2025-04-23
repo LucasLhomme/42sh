@@ -17,6 +17,7 @@
 const command_t command[] = {
     {"|", handle_pipes},
     {";", handle_semicolon},
+    {"&&", handle_double_ampersand},
     {NULL, NULL}
 };
 
