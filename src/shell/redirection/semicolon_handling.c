@@ -12,49 +12,74 @@
 #include "project.h"
 #include "my.h"
 
-void free_array(char **array)
+static int handle_no_semicolon(char **args, int *nb_args, char *token)
 {
-    if (!array)
-        return;
-    for (int i = 0; array[i] != NULL; i++)
-        free(array[i]);
-    free(array);
+    if (!token)
+        return 1;
+    args[*nb_args] = token;
+    (*nb_args)++;
+    return 1;
 }
 
-static int execute_cmd(char **args, semicolon_t cmd_index,
-    env_t *env, int *last_exit_status)
+static void handle_semicolon_case(char **args,
+    int *nb_args, char **current_token, char *semicolon)
 {
-    int cmd_len = cmd_index.end - cmd_index.start;
-    char **cmd = NULL;
+    if (semicolon == *current_token) {
+        args[*nb_args] = ";";
+        (*nb_args)++;
+        (*current_token)++;
+    } else {
+        *semicolon = '\0';
+        args[*nb_args] = *current_token;
+        (*nb_args)++;
+        args[*nb_args] = ";";
+        (*nb_args)++;
+        *current_token = semicolon + 1;
+    }
+}
 
-    if (cmd_len <= 0)
-        return 0;
-    cmd = malloc(sizeof(char *) * (cmd_len + 1));
-    if (!cmd)
-        return 84;
-    for (int j = 0; j < cmd_len; j++)
-        cmd[j] = my_strdup(args[cmd_index.start + j]);
-    cmd[cmd_len] = NULL;
-    execute_command(cmd, env, last_exit_status);
-    free_array(cmd);
+int semicolon_handling(char **args, int *nb_args, char **current_token)
+{
+    char *token = NULL;
+    char *semicolon = NULL;
+
+    token = *current_token;
+    semicolon = strchr(token, ';');
+    if (!semicolon)
+        return handle_no_semicolon(args, nb_args, token);
+    handle_semicolon_case(args, nb_args, current_token, semicolon);
     return 0;
 }
 
-int handle_semicolon(char **args, env_t *env, int *last_exit_status)
+static void execute_segment(char **args,
+    env_t *head, int *exit_status, separator_index_t *index)
 {
-    semicolon_t cmd_index = {0};
-    int is_semicolon = 0;
-    int is_last_arg = 0;
+    for (int i = index->start; i < index->end; i++) {
+        if (args[i] && my_strcmp(args[i], "") != 0) {
+            args[index->end] = NULL;
+            execute_command(&args[index->start], head, exit_status);
+            break;
+        }
+    }
+}
+
+int handle_semicolon(char **args, env_t *head, int *exit_status)
+{
+    separator_index_t index = {0};
 
     for (int i = 0; args[i] != NULL; i++) {
-        is_semicolon = my_strcmp(args[i], ";") == 0;
-        is_last_arg = args[i + 1] == NULL;
-        if (!is_semicolon && !is_last_arg)
-            continue;
-        cmd_index.end = is_semicolon ? i : i + 1;
-        if (execute_cmd(args, cmd_index, env, last_exit_status) == 84)
-            return 84;
-        cmd_index.start = i + 1;
+        if (my_strcmp(args[i], ";") == 0) {
+            index.end = i;
+            execute_segment(args, head, exit_status, &index);
+            index.start = i + 1;
+        }
     }
-    return *last_exit_status;
+    index.end = -1;
+    for (int i = index.start; args[i] != NULL; i++) {
+        if (args[i] && my_strcmp(args[i], "") != 0) {
+            execute_command(&args[index.start], head, exit_status);
+            break;
+        }
+    }
+    return 0;
 }

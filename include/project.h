@@ -72,10 +72,10 @@ typedef struct pipe_command {
     int fd[2];
 } pipe_command_t;
 
-typedef struct semicolon_s {
+typedef struct separator_s {
     int end;
     int start;
-} semicolon_t;
+} separator_index_t;
 
 // Builtin funtion
 
@@ -135,7 +135,9 @@ int is_semicolumn_command(char **args);
 
 void execute_command(char **args, env_t *head, int *exit_status);
 
-int handle_semicolon(char **args, env_t *env, int *exit_status);
+int semicolon_handling(char **args, int *argc, char **token_ptr);
+
+int handle_semicolon(char **args, env_t *head, int *exit_status);
 
 int handle_pipes(char **args, env_t *head, int *exit_status);
 
