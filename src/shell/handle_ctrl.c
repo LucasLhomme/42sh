@@ -77,7 +77,7 @@ static int handle_ctrl_u(char *line, int *pos, int *len)
     return 1;
 }
 
-static int handle_ctrl_y(char *line, int *pos, int *len)
+static int handle_ctrl_k(char *line, int *pos, int *len)
 {
     int i;
     int old_len = *len;
@@ -103,7 +103,7 @@ int check_ctrl(char c, char *line, int *pos, int *len)
         return handle_ctrl_e(pos, len);
     if (c == 21)
         return handle_ctrl_u(line, pos, len);
-    if (c == 25)
-        return handle_ctrl_y(line, pos, len);
+    if (c == 11)
+        return handle_ctrl_k(line, pos, len);
     return 0;
 }
