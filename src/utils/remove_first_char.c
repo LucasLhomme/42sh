@@ -23,4 +23,3 @@ char *remove_first_char(const char *str)
     src[y] = '\0';
     return src;
 }
-
