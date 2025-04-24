@@ -45,7 +45,6 @@ void handle_input(env_t *head, int *exit_status, char **env)
         if (result == 0)
             process_command(line, head, exit_status, env);
         free(line);
-        free_list(head);
     }
 }
 
