@@ -178,6 +178,13 @@ void free_args(char **args);
 // History
 
 int history_add(char *line);
+//handle ctrl
+
+int handle_ctrl_a(int *pos);
+int handle_ctrl_e(int *pos, int *len);
+int handle_ctrl_k(char *line, int *pos, int *len);
+int handle_ctrl_l(char *line, int *pos, int *len);
+int handle_ctrl_u(char *line, int *pos, int *len);
 
 //utils
 
