@@ -101,8 +101,10 @@ int handle_execution_failure(char *cmd_path, char *cmd, int *exit_status)
         (my_strcmp(cmd, "<") == 0)) {
         my_putstrerror("Missing name for redirect.\n");
         *exit_status = 1;
+    } else {
+        *exit_status = 1;
+        print_error(cmd, "Command not found.");
     }
-    print_error(cmd, "Command not found.");
     free_if_necessary(cmd_path, cmd);
     return *exit_status;
 }

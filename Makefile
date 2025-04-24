@@ -51,6 +51,8 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(REDIR_DIR)/pipe_handling.c \
 			$(REDIR_DIR)/redirection_handling.c \
 			$(REDIR_DIR)/semicolon_handling.c \
+			$(REDIR_DIR)/double_ampersand_handling.c \
+			$(REDIR_DIR)/double_pipe_handling.c \
 			$(REDIR_DIR)/is_redirect.c \
 			$(REDIR_DIR)/backtick_handling.c \
 			$(ENV_DIR)/env_array.c \
@@ -70,7 +72,8 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/handle_ctr_c.c \
 			$(UTILS_DIR)/count_node.c \
 			$(SHELL_PROG_DIR)/my_which.c \
-			$(SHELL_PROG_DIR)/my_where.c
+			$(SHELL_PROG_DIR)/my_where.c \
+			$(SHELL_DIR)/handle_ctrl.c
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

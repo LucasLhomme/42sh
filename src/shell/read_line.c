@@ -108,16 +108,20 @@ static int check_character(char c, char *line, int *pos, int *len)
         insert_char(line, c, pos, len);
         return 1;
     }
-    return 1;
+    return -1;
 }
 
 static int read_character(char *line, int *pos, int *len)
 {
-    char c;
+    char c = 0;
+    int status = 0;
 
     if (read(STDIN_FILENO, &c, 1) != 1)
         return -1;
-    return check_character(c, line, pos, len);
+    status = check_character(c, line, pos, len);
+    if (status == -1)
+        status = check_ctrl(c, line, pos, len);
+    return status;
 }
 
 static char *finalize_line(char *line, int len, int status,

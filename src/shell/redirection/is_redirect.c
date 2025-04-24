@@ -15,8 +15,10 @@
 #include "project.h"
 
 const command_t command[] = {
+    {"||", handle_double_pipe},
     {"|", handle_pipes},
     {";", handle_semicolon},
+    {"&&", handle_double_ampersand},
     {NULL, NULL}
 };
 
