@@ -117,9 +117,9 @@ void free_env_array(char **env_array);
 
 char **convert_env_to_array(env_t *head);
 
-history_t *def_linked_list_history(char *command);
+history_t *def_linked_list_history(FILE *history_file);
 
-history_t *add_command(history_t *head, char *command);
+history_t *add_command_to_history(history_t *head, char *command);
 
 void print_history(history_t *head);
 
@@ -173,16 +173,30 @@ void free_args(char **args);
 
 // History
 
-int history_add(char *line);
+int history_add(char *line, history_t **history);
+
+int print_last_n(history_t *head, int idx);
+
+int history_clear(history_t **head);
+
+char *get_history_file_path(void);
 
 //utils
 
 void write_char(int *pos, int *len);
+
 char *remove_first_char(const char *str);
+
 void parse_args(char *line, char **args, int size);
+
 void handle_ctr_c(int sig);
+
 void print_error_reverse(const char *cmd, const char *message, int status);
+
 void print_error(const char *cmd, const char *message);
+
 void my_putstrerror(const char *str);
+
+int count_node(history_t *head);
 
 #endif

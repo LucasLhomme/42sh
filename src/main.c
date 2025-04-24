@@ -29,20 +29,20 @@ void handle_input(env_t *head, int *exit_status, char **env)
 {
     char *line = NULL;
     int result = 0;
+    static history_t *history = NULL;
 
     if (isatty(STDIN_FILENO) == 1)
         print_header();
     while (1) {
         line = read_line();
-        if (!line) {
+        if (!line)
             return;
-        }
-        result = history_add(line);
+        result = history_add(line, &history);
         if (line[0] == '\0') {
             free(line);
             continue;
         }
-        if (result == 0)
+        if (result == 1)
             process_command(line, head, exit_status, env);
         free(line);
     }
