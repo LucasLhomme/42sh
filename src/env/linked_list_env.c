@@ -64,6 +64,7 @@ void free_list(env_t *head)
     while (head) {
         temp = head;
         head = head->next;
+        free(temp->line);
         free(temp);
     }
 }
