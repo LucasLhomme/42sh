@@ -19,6 +19,8 @@ int check_ctrl(char c, char *line, int *pos, int *len)
         return handle_ctrl_u(line, pos, len);
     if (c == 11)
         return handle_ctrl_k(line, pos, len);
+    // if (c == 23)
+    //     return handle_ctrl_w(line, pos, len);
     if (c == 4) {
         printf("exit\n");
         exit(1);

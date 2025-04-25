@@ -76,6 +76,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(SHELL_DIR)/handle_ctrl_k.c \
 			$(SHELL_DIR)/handle_ctrl_l.c \
 			$(SHELL_DIR)/handle_ctrl_u.c \
+			$(SHELL_DIR)/handle_ctrl_w.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 
