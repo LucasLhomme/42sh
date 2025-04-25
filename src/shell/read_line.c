@@ -35,6 +35,9 @@ static void handle_arrow_keys(char seq[2], int *pos, int len)
             (*pos)++;
             write(1, "\033[C", 3);
         }
+        if (seq[0] == '[' && (seq[1] == 'A' || seq[1] == 'B')) {
+            history_navigation(seq);
+        }
     }
 }
 

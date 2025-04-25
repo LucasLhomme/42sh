@@ -47,10 +47,10 @@ typedef struct env {
     struct env *next;
 } env_t;
 
-typedef struct history {
+typedef struct history_s {
     char *command;
-    int idx;
-    struct history *next;
+    struct history_s *next;
+    struct history_s *prev;
 } history_t;
 
 typedef struct builtin_s {
@@ -185,6 +185,11 @@ int history_clear(history_t **head);
 
 char *get_history_file_path(void);
 
+int history_navigation(char seq[2]);
+
+history_t *make_history_linked_list(FILE *history_file, history_t *head);
+
+
 //utils
 
 void write_char(int *pos, int *len);
@@ -201,11 +206,10 @@ void print_error(const char *cmd, const char *message);
 
 void my_putstrerror(const char *str);
 
-<<<<<<< HEAD
 int count_node(history_t *head);
-=======
+
 // Special inputs
+
 int check_ctrl(char c, char *line, int *pos, int *len);
->>>>>>> da88dacffc6a1bf81ff98cf59ec91eb29fd259a0
 
 #endif
