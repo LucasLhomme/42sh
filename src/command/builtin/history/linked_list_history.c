@@ -35,6 +35,7 @@ history_t *create_history_node(char *command)
         return NULL;
     }
     node->next = NULL;
+    node->prev = NULL;
     return node;
 }
 
@@ -51,6 +52,7 @@ history_t *add_command_to_history(history_t *head, char *command)
     while (temp->next)
         temp = temp->next;
     temp->next = new_node;
+    new_node->prev = temp;
     return head;
 }
 
@@ -63,13 +65,13 @@ history_t *def_linked_list_history(FILE *history_file)
 
     if (!history_file)
         return NULL;
-
-    while ((read = getline(&line, &len, history_file)) != -1) {
+    read = getline(&line, &len, history_file);
+    while (read != -1) {
+        read = getline(&line, &len, history_file);
         if (read > 0 && line[read - 1] == '\n')
             line[read - 1] = '\0';
         head = add_command_to_history(head, line);
     }
-
     free(line);
     return head;
 }

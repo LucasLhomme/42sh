@@ -74,7 +74,14 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/count_node.c \
 			$(SHELL_PROG_DIR)/my_which.c \
 			$(SHELL_PROG_DIR)/my_where.c \
-			$(SHELL_DIR)/handle_ctrl.c
+			$(SHELL_DIR)/handle_ctrl.c \
+			$(SHELL_DIR)/handle_ctrl_a.c \
+			$(SHELL_DIR)/handle_ctrl_e.c \
+			$(SHELL_DIR)/handle_ctrl_k.c \
+			$(SHELL_DIR)/handle_ctrl_l.c \
+			$(SHELL_DIR)/handle_ctrl_u.c \
+			$(SHELL_DIR)/handle_ctrl_w.c \
+			$(SHELL_DIR)/handle_arrows.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

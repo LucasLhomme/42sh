@@ -13,6 +13,15 @@
 #include "my.h"
 #include "project.h"
 
+static int is_whitespace_only(const char *line)
+{
+    for (int i = 0; line[i] != '\0'; i++) {
+        if (line[i] != ' ' && line[i] != '\t')
+            return 0;
+    }
+    return 1;
+}
+
 void process_command(char *line, env_t *head, int *exit_status,
     char **env)
 {
@@ -38,7 +47,7 @@ void handle_input(env_t *head, int *exit_status, char **env)
         if (!line)
             return;
         result = history_add(line, &history);
-        if (line[0] == '\0') {
+        if (line[0] == '\0' || is_whitespace_only(line)) {
             free(line);
             continue;
         }

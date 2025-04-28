@@ -14,4 +14,5 @@ test/*
 42sh
 compile_commands.json
 *.cache
-*.idea
+*tests
+*idea

@@ -13,74 +13,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-// history_t *load_history(void)
-// {
-//     FILE *file = fopen(get_history_file_path(), "r");
-//     history_t *history = NULL;
-//     if (!file)
-//         return NULL;
-//     return make_history_linked_list(file, history);
-// }
-
-// int handle_up_arrow(int pos)
-// {
-//     history_t *history = load_history();
-//     int nb_node = count_node(history);
-    
-//     if (pos < 0)
-//         return 0;
-//     pos++;
-//     for (int i = 0; i != nb_node - pos + 1; i++) {
-//         history = history->next;
-//     }
-//     printf("%s", history->command);
-//     return pos + 1;
-// }
-
-// int history_navigation(char seq[2])
-// {
-//     static int pos = 0;
-
-//     if (seq[1] == 'A')
-//         pos = handle_up_arrow(pos);
-//     return 0;
-// }
-
-int history_navigation(char seq[2]) {
+static history_t *load_history(void)
+{
     static history_t *history_start = NULL;
+    static int loaded = 0;
+    char *path = 0;
+    FILE *file = NULL;
+
+    if (!loaded) {
+        path = get_history_file_path();
+        file = fopen(path, "r");
+        free(path);
+        if (file) {
+            history_start = make_history_linked_list(file, NULL);
+            fclose(file);
+        }
+        loaded = 1;
+    }
+    return history_start;
+}
+
+static history_t *navigate_history(char direction, history_t *current)
+{
+    if (direction == 'A' && current && current->prev)
+        return current->prev;
+    if (direction == 'B' && current && current->next)
+        return current->next;
+    return current;
+}
+
+static void display_current_command(const char *command)
+{
+    if (!command)
+        return;
+    write(1, "\33[2K\r", 5);
+    print_prompt();
+    write(1, command, strlen(command));
+    fflush(stdout);
+}
+
+char *history_navigation(char seq[2])
+{
     static history_t *current = NULL;
-    char *path = get_history_file_path();
-    FILE *file = fopen(path, "r");
-    free(path);
+    history_t *history_start = load_history();
 
-    if (!history_start) {
-        if (!file)
-            return 0;
-        history_start = make_history_linked_list(file, NULL);
-        print_history(history_start);
-        // Aller à la fin pour démarrer (dernière commande entrée)
-        for (current = history_start; current && current->next; current = current->next);
-    }
-    if (seq == NULL || (seq[1] != 'A' && seq[1] != 'B')) {
-        return 0;
-    }
-    
-    if (!history_start) // Si tu as une tête d'historique globale
-        return 0;
-
+    if (!history_start || !seq || (seq[1] != 'A' && seq[1] != 'B'))
+        return NULL;
     if (!current)
-        current = history_start; // ou history_tail selon la logique
-    
-    if (seq[1] == 'A') { // flèche haut
-        if (current->prev && current->prev->command) {
-            current = current->prev;
-            // afficher la commande ici
-        }
-    } else if (seq[1] == 'B') { // flèche bas
-        if (current->next && current->next->command) {
-            current = current->next;
-            // afficher la commande ici
-        }
+        current = history_start;
+    current = navigate_history(seq[1], current);
+    if (current && current->command) {
+        display_current_command(current->command);
+        return current->command;
     }
-    return 0;
+    return NULL;
 }

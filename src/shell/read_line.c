@@ -24,21 +24,10 @@ static void set_raw_mode(struct termios *old)
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-static void handle_arrow_keys(char seq[2], int *pos, int len)
+static void handle_arrow_keys(char seq[2], char *line, int *pos, int *len)
 {
-    if (seq[0] == '[') {
-        if (seq[1] == 'D' && *pos > 0) {
-            (*pos)--;
-            write(1, "\033[D", 3);
-        }
-        if (seq[1] == 'C' && *pos < len) {
-            (*pos)++;
-            write(1, "\033[C", 3);
-        }
-        if (seq[0] == '[' && (seq[1] == 'A' || seq[1] == 'B')) {
-            history_navigation(seq);
-        }
-    }
+    handle_horizontal_arrows(seq, pos, len);
+    handle_vertical_arrows(seq, line, pos, len);
 }
 
 static void handle_backspace(char *line, int *pos, int *len)
@@ -83,13 +72,13 @@ static int init_line(char **line, struct termios *oldt)
     return 0;
 }
 
-static int handle_escape(char seq[2], int *pos, int len)
+static int handle_escape(char seq[2], char *line, int *pos, int *len)
 {
     if (read(STDIN_FILENO, &seq[0], 1) != 1)
         return -1;
     if (read(STDIN_FILENO, &seq[1], 1) != 1)
         return -1;
-    handle_arrow_keys(seq, pos, len);
+    handle_arrow_keys(seq, line, pos, len);
     return 1;
 }
 
@@ -102,7 +91,7 @@ static int check_character(char c, char *line, int *pos, int *len)
         return 0;
     }
     if (c == '\033')
-        return handle_escape(seq, pos, *len);
+        return handle_escape(seq, line, pos, len);
     if (c == KEY_BACKSPACE || c == '\b') {
         handle_backspace(line, pos, len);
         return 1;
