@@ -185,6 +185,15 @@ int history_clear(history_t **head);
 
 char *get_history_file_path(void);
 
+//handle ctrl
+
+int handle_ctrl_a(int *pos);
+int handle_ctrl_e(int *pos, int *len);
+int handle_ctrl_k(char *line, int *pos, int *len);
+int handle_ctrl_l(char *line, int *pos, int *len);
+int handle_ctrl_u(char *line, int *pos, int *len);
+int handle_ctrl_w(char *line, int *pos, int *len);
+
 //utils
 
 void write_char(int *pos, int *len);
@@ -201,11 +210,10 @@ void print_error(const char *cmd, const char *message);
 
 void my_putstrerror(const char *str);
 
-<<<<<<< HEAD
 int count_node(history_t *head);
-=======
+
 // Special inputs
+
 int check_ctrl(char c, char *line, int *pos, int *len);
->>>>>>> da88dacffc6a1bf81ff98cf59ec91eb29fd259a0
 
 #endif
