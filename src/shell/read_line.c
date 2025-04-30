@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "my.h"
+#include "project.h"
 
 static void set_raw_mode(struct termios *old)
 {
@@ -38,33 +39,33 @@ static void handle_arrow_keys(char seq[2], int *pos, int len)
     }
 }
 
-static void handle_backspace(char *line, int *pos, int *len)
+static void handle_backspace(handle_ctrl_t ctrl)
 {
-    if (*pos > 0) {
-        memmove(&line[*pos - 1], &line[*pos], *len - *pos);
-        (*len)--;
-        (*pos)--;
+    if (*ctrl.pos > 0) {
+        memmove(&ctrl.line[*ctrl.pos - 1], &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
+        (*ctrl.len)--;
+        (*ctrl.pos)--;
         write(1, "\b", 1);
-        write(1, &line[*pos], *len - *pos);
+        write(1, &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
         write(1, " ", 1);
-        for (int i = 0; i < *len - *pos + 1; i++)
+        for (int i = 0; i < *ctrl.len - *ctrl.pos + 1; i++)
             write(1, "\b", 1);
     }
 }
 
-void insert_char(char *line, char c, int *pos, int *len)
+void insert_char(handle_ctrl_t ctrl)
 {
-    if (*len < 1023) {
-        if (*pos < *len)
-            memmove(&line[*pos + 1], &line[*pos], *len - *pos);
-        line[*pos] = c;
-        (*len)++;
-        (*pos)++;
-        if (*pos < *len) {
-            write(1, &line[*pos - 1], *len - *pos + 1);
-            write_char(pos, len);
+    if (*ctrl.len < 1023) {
+        if (*ctrl.pos < *ctrl.len)
+            memmove(&ctrl.line[*ctrl.pos + 1], &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
+        ctrl.line[*ctrl.pos] = ctrl.c;
+        (*ctrl.len)++;
+        (*ctrl.pos)++;
+        if (*ctrl.pos < *ctrl.len) {
+            write(1, &ctrl.line[*ctrl.pos - 1], *ctrl.len - *ctrl.pos + 1);
+            write_char(ctrl.pos, ctrl.len);
         } else
-            write(1, &c, 1);
+            write(1, &ctrl.c, 1);
     }
 }
 
@@ -90,37 +91,35 @@ static int handle_escape(char seq[2], int *pos, int len)
     return 1;
 }
 
-static int check_character(char c, char *line, int *pos, int *len)
+static int check_character(handle_ctrl_t ctrl)
 {
     char seq[2];
 
-    if (c == '\n') {
+    if (ctrl.c == '\n') {
         write(1, "\n", 1);
         return 0;
     }
-    if (c == '\033')
-        return handle_escape(seq, pos, *len);
-    if (c == KEY_BACKSPACE || c == '\b') {
-        handle_backspace(line, pos, len);
+    if (ctrl.c == '\033')
+        return handle_escape(seq, ctrl.pos, *ctrl.len);
+    if (ctrl.c == KEY_BACKSPACE || ctrl.c == '\b') {
+        handle_backspace(ctrl);
         return 1;
     }
-    if (c >= 32 && c <= 126) {
-        insert_char(line, c, pos, len);
+    if (ctrl.c >= 32 && ctrl.c <= 126) {
+        insert_char(ctrl);
         return 1;
     }
     return -1;
 }
 
-static int read_character(char *line, int *pos, int *len)
+static int read_character(handle_ctrl_t ctrl, int *exit_status)
 {
-    char c = 0;
     int status = 0;
-
-    if (read(STDIN_FILENO, &c, 1) != 1)
+    if (read(STDIN_FILENO, &ctrl.c, 1) != 1)
         return -1;
-    status = check_character(c, line, pos, len);
+    status = check_character(ctrl);
     if (status == -1)
-        status = check_ctrl(c, line, pos, len);
+        status = check_ctrl(&ctrl, exit_status);
     return status;
 }
 
@@ -136,9 +135,10 @@ static char *finalize_line(char *line, int len, int status,
     return line;
 }
 
-char *read_line(void)
+char *read_line(int *exit_status)
 {
     static struct termios oldt;
+    handle_ctrl_t ctrl;
     char *line = NULL;
     int pos = 0;
     int len = 0;
@@ -146,7 +146,11 @@ char *read_line(void)
 
     if (init_line(&line, &oldt) == -1)
         return NULL;
-    while (status > 0)
-        status = read_character(line, &pos, &len);
+    while (status > 0) {
+        ctrl.line = line;
+        ctrl.pos = &pos;
+        ctrl.len = &len;
+        status = read_character(ctrl, exit_status);
+    }
     return finalize_line(line, len, status, &oldt);
 }

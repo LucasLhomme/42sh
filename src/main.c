@@ -42,7 +42,7 @@ void handle_input(env_t *head, int *exit_status, char **env)
     if (isatty(STDIN_FILENO) == 1)
         print_header();
     while (1) {
-        line = read_line();
+        line = read_line(exit_status);
         if (!line) {
             return;
         }

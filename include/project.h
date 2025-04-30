@@ -77,6 +77,13 @@ typedef struct separator_s {
     int start;
 } separator_index_t;
 
+typedef struct handle_ctrl_s {
+    char c;
+    char *line;
+    int *pos;
+    int *len;
+} handle_ctrl_t;
+
 // Builtin funtion
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);
@@ -169,7 +176,7 @@ void print_header(void);
 
 int print_prompt(void);
 
-char *read_line(void);
+char *read_line(int *exit_status);
 
 void parse_args(char *line, char **args, int size);
 
@@ -185,7 +192,8 @@ int handle_ctrl_e(int *pos, int *len);
 int handle_ctrl_k(char *line, int *pos, int *len);
 int handle_ctrl_l(char *line, int *pos, int *len);
 int handle_ctrl_u(char *line, int *pos, int *len);
-int handle_ctrl_w(char *line, int *pos, int *len);
+int handle_ctrl_w(handle_ctrl_t *ctrl);
+
 
 //utils
 
@@ -198,6 +206,6 @@ void print_error(const char *cmd, const char *message);
 void my_putstrerror(const char *str);
 
 // Special inputs
-int check_ctrl(char c, char *line, int *pos, int *len);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 #endif
