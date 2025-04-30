@@ -64,10 +64,13 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(SHELL_DIR)/read_line.c \
 			$(HISTORY_DIR)/history_handling.c \
 			$(HISTORY_DIR)/linked_list_history.c \
+			$(HISTORY_DIR)/history_clear.c \
+			$(HISTORY_DIR)/print_n_last_command.c \
 			$(ECHO_DIR)/echo.c \
 			$(UTILS_DIR)/write_char.c \
 			$(UTILS_DIR)/remove_first_char.c \
 			$(UTILS_DIR)/handle_ctr_c.c \
+			$(UTILS_DIR)/count_node.c \
 			$(SHELL_PROG_DIR)/my_which.c \
 			$(SHELL_PROG_DIR)/my_where.c \
 			$(SHELL_DIR)/handle_ctrl.c \
