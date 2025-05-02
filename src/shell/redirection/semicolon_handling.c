@@ -12,18 +12,6 @@
 #include "project.h"
 #include "my.h"
 
-void execute_segment(char **args,
-    env_t *head, int *exit_status, separator_index_t *index)
-{
-    for (int i = index->start; i < index->end; i++) {
-        if (args[i] && my_strcmp(args[i], "") != 0) {
-            args[index->end] = NULL;
-            execute_command(&args[index->start], head, exit_status);
-            break;
-        }
-    }
-}
-
 int handle_semicolon(char **args, env_t *head, int *exit_status)
 {
     separator_index_t index = {0};

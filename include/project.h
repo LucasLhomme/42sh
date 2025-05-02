@@ -77,6 +77,19 @@ typedef struct separator_s {
     int start;
 } separator_index_t;
 
+typedef struct {
+    char **args;
+    env_t *head;
+    int *exit_status;
+} double_pipe_t;
+
+typedef struct handle_ctrl_s {
+    char c;
+    char *line;
+    int *pos;
+    int *len;
+} handle_ctrl_t;
+
 // Builtin funtion
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);
@@ -173,7 +186,7 @@ void handle_horizontal_arrows(char seq[2], int *pos, int *len);
 
 void handle_vertical_arrows(char seq[2], char *line, int *pos, int *len);
 
-char *read_line(void);
+char *read_line(int *exit_status);
 
 void parse_args(char *line, char **args, int size);
 
@@ -209,7 +222,7 @@ int handle_ctrl_l(char *line, int *pos, int *len);
 
 int handle_ctrl_u(char *line, int *pos, int *len);
 
-int handle_ctrl_w(char *line, int *pos, int *len);
+int handle_ctrl_w(handle_ctrl_t *ctrl);
 
 //utils
 
@@ -231,6 +244,6 @@ int count_node(history_t *head);
 
 // Special inputs
 
-int check_ctrl(char c, char *line, int *pos, int *len);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 #endif
