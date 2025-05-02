@@ -66,6 +66,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(HISTORY_DIR)/linked_list_history.c \
 			$(HISTORY_DIR)/history_clear.c \
 			$(HISTORY_DIR)/print_n_last_command.c \
+			$(HISTORY_DIR)/handle_arrow_up_down.c \
 			$(ECHO_DIR)/echo.c \
 			$(UTILS_DIR)/write_char.c \
 			$(UTILS_DIR)/remove_first_char.c \
@@ -81,6 +82,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(SHELL_DIR)/handle_ctrl_l.c \
 			$(SHELL_DIR)/handle_ctrl_u.c \
 			$(SHELL_DIR)/handle_ctrl_w.c \
+			$(SHELL_DIR)/handle_arrows.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

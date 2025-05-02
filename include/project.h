@@ -47,10 +47,10 @@ typedef struct env {
     struct env *next;
 } env_t;
 
-typedef struct history {
+typedef struct history_s {
     char *command;
-    int idx;
-    struct history *next;
+    struct history_s *next;
+    struct history_s *prev;
 } history_t;
 
 typedef struct builtin_s {
@@ -182,6 +182,10 @@ void print_header(void);
 
 int print_prompt(void);
 
+void handle_horizontal_arrows(char seq[2], int *pos, int *len);
+
+void handle_vertical_arrows(char seq[2], char *line, int *pos, int *len);
+
 char *read_line(int *exit_status);
 
 void parse_args(char *line, char **args, int size);
@@ -198,15 +202,27 @@ int history_clear(history_t **head);
 
 char *get_history_file_path(void);
 
+// int history_navigation(char seq[2]);
+
+char *history_navigation(char seq[2]);
+
+history_t *make_history_linked_list(FILE *history_file, history_t *head);
+
+//int history_add(char *line);
+
 //handle ctrl
 
 int handle_ctrl_a(int *pos);
-int handle_ctrl_e(int *pos, int *len);
-int handle_ctrl_k(char *line, int *pos, int *len);
-int handle_ctrl_l(char *line, int *pos, int *len);
-int handle_ctrl_u(char *line, int *pos, int *len);
-int handle_ctrl_w(handle_ctrl_t *ctrl);
 
+int handle_ctrl_e(int *pos, int *len);
+
+int handle_ctrl_k(char *line, int *pos, int *len);
+
+int handle_ctrl_l(char *line, int *pos, int *len);
+
+int handle_ctrl_u(char *line, int *pos, int *len);
+
+int handle_ctrl_w(handle_ctrl_t *ctrl);
 
 //utils
 
@@ -227,6 +243,7 @@ void my_putstrerror(const char *str);
 int count_node(history_t *head);
 
 // Special inputs
+
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 #endif

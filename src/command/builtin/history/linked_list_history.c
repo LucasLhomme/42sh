@@ -25,7 +25,6 @@ void print_history(history_t *head)
 
 history_t *create_history_node(char *command)
 {
-    static int idx = 0;
     history_t *node = malloc(sizeof(history_t));
 
     if (!node)
@@ -35,9 +34,8 @@ history_t *create_history_node(char *command)
         free(node);
         return NULL;
     }
-    idx++;
-    node->idx = idx;
     node->next = NULL;
+    node->prev = NULL;
     return node;
 }
 
@@ -54,6 +52,7 @@ history_t *add_command_to_history(history_t *head, char *command)
     while (temp->next)
         temp = temp->next;
     temp->next = new_node;
+    new_node->prev = temp;
     return head;
 }
 
@@ -69,7 +68,7 @@ history_t *def_linked_list_history(FILE *history_file)
     read = getline(&line, &len, history_file);
     while (read != -1) {
         read = getline(&line, &len, history_file);
-        if (line[read - 1] == '\n')
+        if (read > 0 && line[read - 1] == '\n')
             line[read - 1] = '\0';
         head = add_command_to_history(head, line);
     }
