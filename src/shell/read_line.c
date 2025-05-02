@@ -92,7 +92,7 @@ static int check_character(handle_ctrl_t ctrl)
         return 0;
     }
     if (ctrl.c == '\033')
-        return handle_escape(seq, ctrl.pos, *ctrl.len);
+        return handle_escape(seq, ctrl.line, ctrl.pos, ctrl.len);
     if (ctrl.c == KEY_BACKSPACE || ctrl.c == '\b') {
         handle_backspace(ctrl);
         return 1;
