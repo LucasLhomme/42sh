@@ -68,6 +68,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/write_char.c \
 			$(UTILS_DIR)/remove_first_char.c \
 			$(UTILS_DIR)/handle_ctr_c.c \
+			$(UTILS_DIR)/execute_seg.c \
 			$(SHELL_PROG_DIR)/my_which.c \
 			$(SHELL_PROG_DIR)/my_where.c \
 			$(SHELL_DIR)/handle_ctrl.c
