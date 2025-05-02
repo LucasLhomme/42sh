@@ -47,10 +47,10 @@ typedef struct env {
     struct env *next;
 } env_t;
 
-typedef struct history {
+typedef struct history_s {
     char *command;
-    int idx;
-    struct history *next;
+    struct history_s *next;
+    struct history_s *prev;
 } history_t;
 
 typedef struct builtin_s {
@@ -76,6 +76,19 @@ typedef struct separator_s {
     int end;
     int start;
 } separator_index_t;
+
+typedef struct {
+    char **args;
+    env_t *head;
+    int *exit_status;
+} double_pipe_t;
+
+typedef struct handle_ctrl_s {
+    char c;
+    char *line;
+    int *pos;
+    int *len;
+} handle_ctrl_t;
 
 // Builtin funtion
 
@@ -117,9 +130,9 @@ void free_env_array(char **env_array);
 
 char **convert_env_to_array(env_t *head);
 
-history_t *def_linked_list_history(char *command);
+history_t *def_linked_list_history(FILE *history_file);
 
-history_t *add_command(history_t *head, char *command);
+history_t *add_command_to_history(history_t *head, char *command);
 
 void print_history(history_t *head);
 
@@ -129,20 +142,17 @@ void free_history(history_t *head);
 
 int exec_pipe_command(pipe_command_t *commands, env_t *env, int *exit_status);
 
-int is_piped_command(char **args, int *exit_status);
-
-int is_semicolumn_command(char **args);
-
 void execute_segment(char **args,
+    env_t *head, int *exit_status, separator_index_t *index);
+
+void execute_last_command(char **args,
     env_t *head, int *exit_status, separator_index_t *index);
 
 int handle_double_ampersand(char **args, env_t *head, int *exit_status);
 
-int double_ampersand_handling(char **args, int *nb_args, char **token_index);
+int handle_double_pipe(char **args, env_t *head, int *exit_status);
 
 void execute_command(char **args, env_t *head, int *exit_status);
-
-int semicolon_handling(char **args, int *argc, char **token_ptr);
 
 int handle_semicolon(char **args, env_t *head, int *exit_status);
 
@@ -172,7 +182,11 @@ void print_header(void);
 
 int print_prompt(void);
 
-char *read_line(void);
+void handle_horizontal_arrows(char seq[2], int *pos, int *len);
+
+void handle_vertical_arrows(char seq[2], char *line, int *pos, int *len);
+
+char *read_line(int *exit_status);
 
 void parse_args(char *line, char **args, int size);
 
@@ -180,16 +194,56 @@ void free_args(char **args);
 
 // History
 
-int history_add(char *line);
+int history_add(char *line, history_t **history);
+
+int print_last_n(history_t *head, int idx);
+
+int history_clear(history_t **head);
+
+char *get_history_file_path(void);
+
+// int history_navigation(char seq[2]);
+
+char *history_navigation(char seq[2]);
+
+history_t *make_history_linked_list(FILE *history_file, history_t *head);
+
+//int history_add(char *line);
+
+//handle ctrl
+
+int handle_ctrl_a(int *pos);
+
+int handle_ctrl_e(int *pos, int *len);
+
+int handle_ctrl_k(char *line, int *pos, int *len);
+
+int handle_ctrl_l(char *line, int *pos, int *len);
+
+int handle_ctrl_u(char *line, int *pos, int *len);
+
+int handle_ctrl_w(handle_ctrl_t *ctrl);
 
 //utils
 
 void write_char(int *pos, int *len);
+
 char *remove_first_char(const char *str);
+
 void parse_args(char *line, char **args, int size);
+
 void handle_ctr_c(int sig);
+
 void print_error_reverse(const char *cmd, const char *message, int status);
+
 void print_error(const char *cmd, const char *message);
+
 void my_putstrerror(const char *str);
+
+int count_node(history_t *head);
+
+// Special inputs
+
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 #endif

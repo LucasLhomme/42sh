@@ -12,57 +12,6 @@
 #include "project.h"
 #include "my.h"
 
-static int handle_no_semicolon(char **args, int *nb_args, char *token)
-{
-    if (!token)
-        return 1;
-    args[*nb_args] = token;
-    (*nb_args)++;
-    return 1;
-}
-
-static void handle_semicolon_case(char **args,
-    int *nb_args, char **current_token, char *semicolon)
-{
-    if (semicolon == *current_token) {
-        args[*nb_args] = ";";
-        (*nb_args)++;
-        (*current_token)++;
-    } else {
-        *semicolon = '\0';
-        args[*nb_args] = *current_token;
-        (*nb_args)++;
-        args[*nb_args] = ";";
-        (*nb_args)++;
-        *current_token = semicolon + 1;
-    }
-}
-
-int semicolon_handling(char **args, int *nb_args, char **current_token)
-{
-    char *token = NULL;
-    char *semicolon = NULL;
-
-    token = *current_token;
-    semicolon = strchr(token, ';');
-    if (!semicolon)
-        return handle_no_semicolon(args, nb_args, token);
-    handle_semicolon_case(args, nb_args, current_token, semicolon);
-    return 0;
-}
-
-void execute_segment(char **args,
-    env_t *head, int *exit_status, separator_index_t *index)
-{
-    for (int i = index->start; i < index->end; i++) {
-        if (args[i] && my_strcmp(args[i], "") != 0) {
-            args[index->end] = NULL;
-            execute_command(&args[index->start], head, exit_status);
-            break;
-        }
-    }
-}
-
 int handle_semicolon(char **args, env_t *head, int *exit_status)
 {
     separator_index_t index = {0};

@@ -12,45 +12,7 @@
 #include "project.h"
 #include "my.h"
 
-static int handle_no_double_ampersand(char **args, int *nb_args, char *token)
-{
-    args[*nb_args] = token;
-    (*nb_args)++;
-    return 1;
-}
-
-static void handle_double_ampersand_case(char **args,
-    int *nb_args, char **current_token, char *double_ampersand)
-{
-    if (double_ampersand == *current_token) {
-        args[*nb_args] = "&&";
-        (*nb_args)++;
-        (*current_token)++;
-    } else {
-        *double_ampersand = '\0';
-        args[*nb_args] = *current_token;
-        (*nb_args)++;
-        args[*nb_args] = "&&";
-        (*nb_args)++;
-        *current_token = double_ampersand + 2;
-    }
-}
-
-int double_ampersand_handling(char **args, int *nb_args, char **current_token)
-{
-    char *token = NULL;
-    char *double_ampersand = NULL;
-
-    token = *current_token;
-    double_ampersand = strstr(token, "&&");
-    if (!double_ampersand)
-        return handle_no_double_ampersand(args, nb_args, token);
-    handle_double_ampersand_case
-        (args, nb_args, current_token, double_ampersand);
-    return 0;
-}
-
-static void execute_last_command(char **args,
+void execute_last_command(char **args,
     env_t *head, int *exit_status, separator_index_t *index)
 {
     for (int i = index->start; args[i] != NULL; i++) {

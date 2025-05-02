@@ -52,6 +52,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(REDIR_DIR)/redirection_handling.c \
 			$(REDIR_DIR)/semicolon_handling.c \
 			$(REDIR_DIR)/double_ampersand_handling.c \
+			$(REDIR_DIR)/double_pipe_handling.c \
 			$(REDIR_DIR)/is_redirect.c \
 			$(REDIR_DIR)/backtick_handling.c \
 			$(ENV_DIR)/env_array.c \
@@ -63,12 +64,25 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(SHELL_DIR)/read_line.c \
 			$(HISTORY_DIR)/history_handling.c \
 			$(HISTORY_DIR)/linked_list_history.c \
+			$(HISTORY_DIR)/history_clear.c \
+			$(HISTORY_DIR)/print_n_last_command.c \
+			$(HISTORY_DIR)/handle_arrow_up_down.c \
 			$(ECHO_DIR)/echo.c \
 			$(UTILS_DIR)/write_char.c \
 			$(UTILS_DIR)/remove_first_char.c \
 			$(UTILS_DIR)/handle_ctr_c.c \
+			$(UTILS_DIR)/execute_seg.c \
+			$(UTILS_DIR)/count_node.c \
 			$(SHELL_PROG_DIR)/my_which.c \
-			$(SHELL_PROG_DIR)/my_where.c
+			$(SHELL_PROG_DIR)/my_where.c \
+			$(SHELL_DIR)/handle_ctrl.c \
+			$(SHELL_DIR)/handle_ctrl_a.c \
+			$(SHELL_DIR)/handle_ctrl_e.c \
+			$(SHELL_DIR)/handle_ctrl_k.c \
+			$(SHELL_DIR)/handle_ctrl_l.c \
+			$(SHELL_DIR)/handle_ctrl_u.c \
+			$(SHELL_DIR)/handle_ctrl_w.c \
+			$(SHELL_DIR)/handle_arrows.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 

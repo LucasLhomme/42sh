@@ -5,11 +5,26 @@
 ** is_str_alnum.c
 */
 
+#include "../../include/my.h"
+
 int is_alpha(char c)
 {
     if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')
         return 0;
     return 84;
+}
+
+int is_num(char *str)
+{
+    if (!str)
+        return 84;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] >= '0' && str[i] <= '9')
+            continue;
+        else
+            return 84;
+    }
+    return 0;
 }
 
 int is_alnum_two(char *str)

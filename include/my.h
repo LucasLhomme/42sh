@@ -136,8 +136,12 @@ int my_isalnum_char(char c);
 
 int is_alpha(char c);
 
+int is_num(char *str);
+
 char *cat_tab(char **tab);
 
 char **my_str_to_word_array_advanced(char *str, char *extra_chars);
+
+int len_args(char **tab);
 
 #endif

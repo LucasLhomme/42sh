@@ -13,29 +13,6 @@
 #include <stdio.h>
 #include "project.h"
 
-history_t *add_command(history_t *head, char *command)
-{
-    static int idx = 0;
-    history_t *node = malloc(sizeof(history_t));
-    history_t *temp;
-
-    if (node == NULL)
-        return NULL;
-    node->command = strdup(command);
-    if (!node->command)
-        return NULL;
-    node->idx = idx;
-    node->next = NULL;
-    if (!head)
-        return node;
-    temp = head;
-    while (temp->next)
-        temp = temp->next;
-    temp->next = node;
-    idx++;
-    return head;
-}
-
 void print_history(history_t *head)
 {
     if (head == NULL)
@@ -46,14 +23,56 @@ void print_history(history_t *head)
     }
 }
 
-history_t *def_linked_list_history(char *command)
+history_t *create_history_node(char *command)
+{
+    history_t *node = malloc(sizeof(history_t));
+
+    if (!node)
+        return NULL;
+    node->command = strdup(command);
+    if (!node->command) {
+        free(node);
+        return NULL;
+    }
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
+
+history_t *add_command_to_history(history_t *head, char *command)
+{
+    history_t *new_node = create_history_node(command);
+    history_t *temp;
+
+    if (!new_node)
+        return head;
+    if (!head)
+        return new_node;
+    temp = head;
+    while (temp->next)
+        temp = temp->next;
+    temp->next = new_node;
+    new_node->prev = temp;
+    return head;
+}
+
+history_t *def_linked_list_history(FILE *history_file)
 {
     history_t *head = NULL;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
 
-    if (command == NULL) {
-        return head;
+    if (!history_file)
+        return NULL;
+    read = getline(&line, &len, history_file);
+    while (read != -1) {
+        read = getline(&line, &len, history_file);
+        if (read > 0 && line[read - 1] == '\n')
+            line[read - 1] = '\0';
+        head = add_command_to_history(head, line);
     }
-    head = add_command(head, command);
+    free(line);
     return head;
 }
 
@@ -64,6 +83,7 @@ void free_history(history_t *head)
     while (head) {
         temp = head;
         head = head->next;
+        free(temp->command);
         free(temp);
     }
 }
