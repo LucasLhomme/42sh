@@ -4,30 +4,27 @@
 ** File description:
 ** handle_ctrl
 */
-
 #include <unistd.h>
-
 #include "project.h"
 
-int check_ctrl(char c, char *line, int *pos, int *len)
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status)
 {
-    if (c == 12) {
-        write(1, "\033[H\033[J", 6);
-        *pos = 0;
-        *len = 0;
-        line[0] = '\0';
-        print_prompt();
-        return 1;
+    if (handle_ctrl->c == 12)
+        *exit_status = handle_ctrl_l(handle_ctrl->line, handle_ctrl->pos, handle_ctrl->len);
+    if (handle_ctrl->c == 1)
+        *exit_status = handle_ctrl_a(handle_ctrl->pos);
+    if (handle_ctrl->c == 5)
+        *exit_status = handle_ctrl_e(handle_ctrl->pos, handle_ctrl->len);
+    if (handle_ctrl->c == 21)
+        *exit_status = handle_ctrl_u(handle_ctrl->line, handle_ctrl->pos,
+    handle_ctrl->len);
+    if (handle_ctrl->c == 11)
+        *exit_status = handle_ctrl_k(handle_ctrl->line, handle_ctrl->pos,
+    handle_ctrl->len);
+    if (handle_ctrl->c == 23)
+         return handle_ctrl_w(handle_ctrl);
+    if (handle_ctrl->c == 4) {
+        exit(*exit_status);
     }
-    if (c == 1) {
-        for (; *pos > 0; (*pos)--)
-            write(1, "\033[D", 3);
-        return 1;
-    }
-    if (c == 5) {
-        for (; *pos < *len; (*pos)++)
-            write(1, "\033[C", 3);
-        return 1;
-    }
-    return 0;
+    return *exit_status;
 }

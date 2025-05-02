@@ -83,6 +83,13 @@ typedef struct {
     int *exit_status;
 } double_pipe_t;
 
+typedef struct handle_ctrl_s {
+    char c;
+    char *line;
+    int *pos;
+    int *len;
+} handle_ctrl_t;
+
 // Builtin funtion
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);
@@ -123,9 +130,9 @@ void free_env_array(char **env_array);
 
 char **convert_env_to_array(env_t *head);
 
-history_t *def_linked_list_history(char *command);
+history_t *def_linked_list_history(FILE *history_file);
 
-history_t *add_command(history_t *head, char *command);
+history_t *add_command_to_history(history_t *head, char *command);
 
 void print_history(history_t *head);
 
@@ -175,7 +182,7 @@ void print_header(void);
 
 int print_prompt(void);
 
-char *read_line(void);
+char *read_line(int *exit_status);
 
 void parse_args(char *line, char **args, int size);
 
@@ -183,19 +190,43 @@ void free_args(char **args);
 
 // History
 
-int history_add(char *line);
+int history_add(char *line, history_t **history);
+
+int print_last_n(history_t *head, int idx);
+
+int history_clear(history_t **head);
+
+char *get_history_file_path(void);
+
+//handle ctrl
+
+int handle_ctrl_a(int *pos);
+int handle_ctrl_e(int *pos, int *len);
+int handle_ctrl_k(char *line, int *pos, int *len);
+int handle_ctrl_l(char *line, int *pos, int *len);
+int handle_ctrl_u(char *line, int *pos, int *len);
+int handle_ctrl_w(handle_ctrl_t *ctrl);
+
 
 //utils
 
 void write_char(int *pos, int *len);
+
 char *remove_first_char(const char *str);
+
 void parse_args(char *line, char **args, int size);
+
 void handle_ctr_c(int sig);
+
 void print_error_reverse(const char *cmd, const char *message, int status);
+
 void print_error(const char *cmd, const char *message);
+
 void my_putstrerror(const char *str);
 
+int count_node(history_t *head);
+
 // Special inputs
-int check_ctrl(char c, char *line, int *pos, int *len);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 #endif
