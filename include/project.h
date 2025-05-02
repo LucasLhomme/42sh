@@ -77,6 +77,12 @@ typedef struct separator_s {
     int start;
 } separator_index_t;
 
+typedef struct {
+    char **args;
+    env_t *head;
+    int *exit_status;
+} double_pipe_t;
+
 // Builtin funtion
 
 int is_builtin(env_t *head, char **args, char **env, int *last_exit_value);

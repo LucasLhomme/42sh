@@ -19,7 +19,7 @@ static char *extract_command(char **str)
     char *word = NULL;
 
     while (**str && strncmp(*str, "&&", 2) != 0 &&
-       strncmp(*str, "||", 2) != 0 && **str != ';')
+        strncmp(*str, "||", 2) != 0 && **str != ';')
     (*str)++;
     len = *str - start;
     word = strndup(start, len);
