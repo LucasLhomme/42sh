@@ -10,17 +10,20 @@
 int handle_double_pipe(char **args, env_t *head, int *exit_status)
 {
     separator_index_t index = {0};
+    int i = 0;
 
-    for (int i = 0; args[i] != NULL; i++) {
+    while (args[i] != NULL) {
         if (my_strcmp(args[i], "||") == 0) {
             index.end = i;
             execute_segment(args, head, exit_status, &index);
+            if (*exit_status == 0)
+                return 0;
             index.start = i + 1;
         }
+        i++;
     }
-    if (*exit_status != 0) {
-        index.end = -1;
-        execute_last_command(args, head, exit_status, &index);
-    }
+    index.end = -1;
+    execute_last_command(args, head, exit_status, &index);
     return 0;
 }
+
