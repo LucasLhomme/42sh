@@ -83,12 +83,15 @@ typedef struct {
     int *exit_status;
 } double_pipe_t;
 
-typedef struct handle_ctrl_s {
+typedef struct {
     char c;
     char *line;
+    char **line_ptr;
     int *pos;
     int *len;
+    int capacity;
 } handle_ctrl_t;
+
 
 // Builtin funtion
 
