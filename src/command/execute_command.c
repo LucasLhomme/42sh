@@ -18,12 +18,13 @@
 
 static char *construct_full_path(const char *dir, const char *command)
 {
-    char full_path[256];
+    int path_size = my_strlen(dir) + my_strlen(command) + 2;
+    char *full_path = malloc(path_size);
 
     my_strcpy(full_path, dir);
     my_strcat(full_path, "/");
     my_strcat(full_path, command);
-    return strdup(full_path);
+    return full_path;
 }
 
 char *find_path(char *command, env_t *head)
