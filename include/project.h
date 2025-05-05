@@ -84,11 +84,11 @@ typedef struct {
 } double_pipe_t;
 
 typedef struct {
-    char c;
     char *line;
     char **line_ptr;
     int *pos;
     int *len;
+    char c;
     int capacity;
 } handle_ctrl_t;
 
@@ -187,7 +187,7 @@ int print_prompt(void);
 
 void handle_horizontal_arrows(char seq[2], int *pos, int *len);
 
-void handle_vertical_arrows(char seq[2], char *line, int *pos, int *len);
+void handle_vertical_arrows(char seq[2], handle_ctrl_t *ctrl);
 
 char *read_line(int *exit_status);
 

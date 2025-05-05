@@ -25,16 +25,17 @@ static void set_raw_mode(struct termios *old)
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-static void handle_arrow_keys(char seq[2], char *line, int *pos, int *len)
+static void handle_arrow_keys(char seq[2], handle_ctrl_t ctrl)
 {
-    handle_horizontal_arrows(seq, pos, len);
-    handle_vertical_arrows(seq, line, pos, len);
+    handle_horizontal_arrows(seq, ctrl.pos, ctrl.len);
+    handle_vertical_arrows(seq, &ctrl);
 }
 
 static void handle_backspace(handle_ctrl_t ctrl)
 {
     if (*ctrl.pos > 0) {
-        memmove(&ctrl.line[*ctrl.pos - 1], &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
+        memmove(&ctrl.line[*ctrl.pos - 1],
+            &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
         (*ctrl.len)--;
         (*ctrl.pos)--;
         write(1, "\b", 1);
@@ -48,13 +49,12 @@ static void handle_backspace(handle_ctrl_t ctrl)
 void insert_char(handle_ctrl_t ctrl)
 {
     if (*ctrl.len + 1 >= ctrl.capacity) {
-        size_t new_capacity = (ctrl.capacity == 0) ? 16 : ctrl.capacity * 2;
-        char *new_line = realloc(ctrl.line, new_capacity);
+        ctrl.capacity *= 2;
+        char *new_line = realloc(*ctrl.line_ptr, ctrl.capacity);
         if (!new_line)
             return;
-        ctrl.line = new_line;
         *ctrl.line_ptr = new_line;
-        ctrl.capacity = new_capacity;
+        ctrl.line = *ctrl.line_ptr;
     }
     if (*ctrl.pos < *ctrl.len)
         memmove(&ctrl.line[*ctrl.pos + 1], &ctrl.line[*ctrl.pos],
@@ -69,7 +69,6 @@ void insert_char(handle_ctrl_t ctrl)
         write(1, &ctrl.c, 1);
 }
 
-
 static int init_line(char **line, struct termios *oldt)
 {
     *line = NULL;
@@ -79,13 +78,13 @@ static int init_line(char **line, struct termios *oldt)
     return 0;
 }
 
-static int handle_escape(char seq[2], char *line, int *pos, int *len)
+static int handle_escape(char seq[2], handle_ctrl_t ctrl)
 {
     if (read(STDIN_FILENO, &seq[0], 1) != 1)
         return -1;
     if (read(STDIN_FILENO, &seq[1], 1) != 1)
         return -1;
-    handle_arrow_keys(seq, line, pos, len);
+    handle_arrow_keys(seq, ctrl);
     return 1;
 }
 
@@ -98,7 +97,7 @@ static int check_character(handle_ctrl_t ctrl)
         return 0;
     }
     if (ctrl.c == '\033')
-        return handle_escape(seq, ctrl.line, ctrl.pos, ctrl.len);
+        return handle_escape(seq, ctrl);
     if (ctrl.c == KEY_BACKSPACE || ctrl.c == '\b') {
         handle_backspace(ctrl);
         return 1;
@@ -113,6 +112,7 @@ static int check_character(handle_ctrl_t ctrl)
 static int read_character(handle_ctrl_t ctrl, int *exit_status)
 {
     int status = 0;
+
     if (read(STDIN_FILENO, &ctrl.c, 1) != 1)
         return -1;
     status = check_character(ctrl);
@@ -133,6 +133,19 @@ static char *finalize_line(char *line, int len, int status,
     return line;
 }
 
+int ensure_capacity(handle_ctrl_t *ctrl)
+{
+    if (*(ctrl->pos) + 1 >= ctrl->capacity) {
+        ctrl->capacity *= 2;
+        char *new_line = realloc(*(ctrl->line_ptr), ctrl->capacity);
+        if (!new_line)
+            return -1;
+        *(ctrl->line_ptr) = new_line;
+        ctrl->line = *(ctrl->line_ptr);
+    }
+    return 0;
+}
+
 char *read_line(int *exit_status)
 {
     static struct termios oldt;
@@ -144,13 +157,21 @@ char *read_line(int *exit_status)
 
     if (init_line(&line, &oldt) == -1)
         return NULL;
-    ctrl.capacity = 0;
+    ctrl.capacity = 64;
+    line = malloc(ctrl.capacity);
+    if (!line)
+        return NULL;
+    memset(line, 0, ctrl.capacity);
     while (status > 0) {
         ctrl.line = line;
         ctrl.line_ptr = &line;
         ctrl.pos = &pos;
         ctrl.len = &len;
+    
+        if (ensure_capacity(&ctrl) == -1)
+            return NULL;
+    
         status = read_character(ctrl, exit_status);
-    }
+    }    
     return finalize_line(line, len, status, &oldt);
 }
