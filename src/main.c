@@ -15,13 +15,18 @@
 void process_command(char *line, env_t *head, int *exit_status,
     char **env)
 {
-    int size = strlen(line) + 1;
+    int size = strlen(line);
     char *args[size];
 
+    for (int i = 0; i < size; i++)
+        args[i] = NULL;
     parse_args(line, args, size);
-    if (is_builtin(head, args, env, exit_status) == 1)
+    if (is_builtin(head, args, env, exit_status) == 1) {
+        free_args(args);
         return;
+    }
     execute_command(args, head, exit_status);
+    free_args(args);
 }
 
 void handle_input(env_t *head, int *exit_status, char **env)

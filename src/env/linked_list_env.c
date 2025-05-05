@@ -17,7 +17,7 @@
 env_t *add_node(env_t *head, char *line, int status)
 {
     env_t *node = malloc(sizeof(env_t));
-    env_t *temp;
+    env_t *temp = NULL;
 
     if (node == NULL)
         return NULL;
