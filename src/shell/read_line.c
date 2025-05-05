@@ -25,10 +25,10 @@ static void set_raw_mode(struct termios *old)
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-static void handle_arrow_keys(char seq[2], char *line, int *pos, int *len)
+static void handle_arrow_keys(char seq[2], handle_ctrl_t ctrl)
 {
-    handle_horizontal_arrows(seq, pos, len);
-    handle_vertical_arrows(seq, line, pos, len);
+    handle_horizontal_arrows(seq, ctrl.pos, ctrl.len);
+    handle_vertical_arrows(seq, &ctrl);
 }
 
 static void handle_backspace(handle_ctrl_t ctrl)
@@ -46,42 +46,22 @@ static void handle_backspace(handle_ctrl_t ctrl)
     }
 }
 
-void insert_char(handle_ctrl_t ctrl)
-{
-    if (*ctrl.len < 1023) {
-        if (*ctrl.pos < *ctrl.len)
-            memmove(&ctrl.line[*ctrl.pos + 1],
-        &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
-        ctrl.line[*ctrl.pos] = ctrl.c;
-        (*ctrl.len)++;
-        (*ctrl.pos)++;
-        if (*ctrl.pos < *ctrl.len) {
-            write(1, &ctrl.line[*ctrl.pos - 1], *ctrl.len - *ctrl.pos + 1);
-            write_char(ctrl.pos, ctrl.len);
-        } else
-            write(1, &ctrl.c, 1);
-    }
-}
-
 static int init_line(char **line, struct termios *oldt)
 {
-    *line = malloc(1024);
-    if (!*line)
-        return -1;
-    memset(*line, 0, 1024);
+    *line = NULL;
     set_raw_mode(oldt);
     if (isatty(STDIN_FILENO))
         print_prompt();
     return 0;
 }
 
-static int handle_escape(char seq[2], char *line, int *pos, int *len)
+static int handle_escape(char seq[2], handle_ctrl_t ctrl)
 {
     if (read(STDIN_FILENO, &seq[0], 1) != 1)
         return -1;
     if (read(STDIN_FILENO, &seq[1], 1) != 1)
         return -1;
-    handle_arrow_keys(seq, line, pos, len);
+    handle_arrow_keys(seq, ctrl);
     return 1;
 }
 
@@ -94,7 +74,7 @@ static int check_character(handle_ctrl_t ctrl)
         return 0;
     }
     if (ctrl.c == '\033')
-        return handle_escape(seq, ctrl.line, ctrl.pos, ctrl.len);
+        return handle_escape(seq, ctrl);
     if (ctrl.c == KEY_BACKSPACE || ctrl.c == '\b') {
         handle_backspace(ctrl);
         return 1;
@@ -130,6 +110,18 @@ static char *finalize_line(char *line, int len, int status,
     return line;
 }
 
+static int prepare_reading(char **line, struct termios *oldt, handle_ctrl_t *ctrl)
+{
+    if (init_line(line, oldt) == -1)
+        return -1;
+    ctrl->capacity = 64;
+    *line = malloc(ctrl->capacity);
+    if (!*line)
+        return -1;
+    memset(*line, 0, ctrl->capacity);
+    return 0;
+}
+
 char *read_line(int *exit_status)
 {
     static struct termios oldt;
@@ -139,12 +131,15 @@ char *read_line(int *exit_status)
     int len = 0;
     int status = 1;
 
-    if (init_line(&line, &oldt) == -1)
+    if (prepare_reading(&line, &oldt, &ctrl) == -1)
         return NULL;
+    ctrl.line = line;
+    ctrl.line_ptr = &line;
+    ctrl.pos = &pos;
+    ctrl.len = &len;
     while (status > 0) {
-        ctrl.line = line;
-        ctrl.pos = &pos;
-        ctrl.len = &len;
+        if (ensure_capacity(&ctrl) == -1)
+            return NULL;
         status = read_character(ctrl, exit_status);
     }
     return finalize_line(line, len, status, &oldt);

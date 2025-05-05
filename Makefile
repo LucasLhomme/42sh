@@ -62,6 +62,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(SRC_DIR)/main.c \
 			$(SHELL_DIR)/print_prompt.c \
 			$(SHELL_DIR)/read_line.c \
+			$(SHELL_DIR)/no_name.c \
 			$(HISTORY_DIR)/history_handling.c \
 			$(HISTORY_DIR)/linked_list_history.c \
 			$(HISTORY_DIR)/history_clear.c \

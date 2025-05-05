@@ -6,10 +6,7 @@
 */
 
 #include <unistd.h>
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include "my.h"
 #include "project.h"
 
 const builtin_t builtin[] = {
