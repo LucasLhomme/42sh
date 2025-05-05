@@ -110,7 +110,8 @@ static char *finalize_line(char *line, int len, int status,
     return line;
 }
 
-static int prepare_reading(char **line, struct termios *oldt, handle_ctrl_t *ctrl)
+static int prepare_reading(char **line, struct termios *oldt,
+    handle_ctrl_t *ctrl)
 {
     if (init_line(line, oldt) == -1)
         return -1;
