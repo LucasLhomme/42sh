@@ -46,29 +46,6 @@ static void handle_backspace(handle_ctrl_t ctrl)
     }
 }
 
-void insert_char(handle_ctrl_t ctrl)
-{
-    if (*ctrl.len + 1 >= ctrl.capacity) {
-        ctrl.capacity *= 2;
-        char *new_line = realloc(*ctrl.line_ptr, ctrl.capacity);
-        if (!new_line)
-            return;
-        *ctrl.line_ptr = new_line;
-        ctrl.line = *ctrl.line_ptr;
-    }
-    if (*ctrl.pos < *ctrl.len)
-        memmove(&ctrl.line[*ctrl.pos + 1], &ctrl.line[*ctrl.pos],
-            *ctrl.len - *ctrl.pos);
-    ctrl.line[*ctrl.pos] = ctrl.c;
-    (*ctrl.len)++;
-    (*ctrl.pos)++;
-    if (*ctrl.pos < *ctrl.len) {
-        write(1, &ctrl.line[*ctrl.pos - 1], *ctrl.len - *ctrl.pos + 1);
-        write_char(ctrl.pos, ctrl.len);
-    } else
-        write(1, &ctrl.c, 1);
-}
-
 static int init_line(char **line, struct termios *oldt)
 {
     *line = NULL;
@@ -133,16 +110,15 @@ static char *finalize_line(char *line, int len, int status,
     return line;
 }
 
-int ensure_capacity(handle_ctrl_t *ctrl)
+static int prepare_reading(char **line, struct termios *oldt, handle_ctrl_t *ctrl)
 {
-    if (*(ctrl->pos) + 1 >= ctrl->capacity) {
-        ctrl->capacity *= 2;
-        char *new_line = realloc(*(ctrl->line_ptr), ctrl->capacity);
-        if (!new_line)
-            return -1;
-        *(ctrl->line_ptr) = new_line;
-        ctrl->line = *(ctrl->line_ptr);
-    }
+    if (init_line(line, oldt) == -1)
+        return -1;
+    ctrl->capacity = 64;
+    *line = malloc(ctrl->capacity);
+    if (!*line)
+        return -1;
+    memset(*line, 0, ctrl->capacity);
     return 0;
 }
 
@@ -155,23 +131,16 @@ char *read_line(int *exit_status)
     int len = 0;
     int status = 1;
 
-    if (init_line(&line, &oldt) == -1)
+    if (prepare_reading(&line, &oldt, &ctrl) == -1)
         return NULL;
-    ctrl.capacity = 64;
-    line = malloc(ctrl.capacity);
-    if (!line)
-        return NULL;
-    memset(line, 0, ctrl.capacity);
+    ctrl.line = line;
+    ctrl.line_ptr = &line;
+    ctrl.pos = &pos;
+    ctrl.len = &len;
     while (status > 0) {
-        ctrl.line = line;
-        ctrl.line_ptr = &line;
-        ctrl.pos = &pos;
-        ctrl.len = &len;
-    
         if (ensure_capacity(&ctrl) == -1)
             return NULL;
-    
         status = read_character(ctrl, exit_status);
-    }    
+    }
     return finalize_line(line, len, status, &oldt);
 }
