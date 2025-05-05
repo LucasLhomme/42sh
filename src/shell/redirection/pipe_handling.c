@@ -109,10 +109,10 @@ static void parse_pipe_arguments(char **args, pipe_command_t *commands)
             i++;
             break;
         }
-        commands->cmd1[i] = my_strdup(args[i]);
+        commands->cmd1[i] = strdup(args[i]);
     }
     while (args[i] != NULL) {
-        commands->cmd2[j] = my_strdup(args[i]);
+        commands->cmd2[j] = strdup(args[i]);
         j++;
         i++;
     }

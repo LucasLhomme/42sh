@@ -23,7 +23,7 @@ static char *construct_full_path(const char *dir, const char *command)
     my_strcpy(full_path, dir);
     my_strcat(full_path, "/");
     my_strcat(full_path, command);
-    return my_strdup(full_path);
+    return strdup(full_path);
 }
 
 char *find_path(char *command, env_t *head)
@@ -35,7 +35,7 @@ char *find_path(char *command, env_t *head)
 
     if (!path)
         return NULL;
-    paths = my_strdup(path);
+    paths = strdup(path);
     dir = strtok(paths, ":");
     while (dir) {
         full_path = construct_full_path(dir, command);

@@ -21,8 +21,8 @@ static char *extract_command(char **str)
     while (**str && strncmp(*str, "&&", 2) != 0 &&
         strncmp(*str, "||", 2) != 0 && **str != ';')
     (*str)++;
-    len = *str - start;
-    word = strndup(start, len);
+        len = *str - start;
+        word = strndup(start, len);
     return word;
 }
 
@@ -75,7 +75,8 @@ static void spot_command(char **token, char **args, int *argc)
     if (word && *word) {
         args[*argc] = word;
         (*argc)++;
-    }
+    } else
+        free(word);
 }
 
 static void parse_token(char *token, char **args, int *argc, int size)
