@@ -16,8 +16,8 @@
 char *get_history_file_path(void)
 {
     char *home = getenv("HOME");
-    char *path;
-    size_t len;
+    char *path = NULL;
+    size_t len = 0;
 
     if (!home)
         return NULL;
@@ -54,12 +54,15 @@ int history_handle(char *str, history_t **head)
 {
     char **tab = NULL;
     int result = 0;
+    char *tmp = str;
 
     if (!str)
         return 0;
+    tmp += strspn(tmp, " \t");
+    if (*tmp == '\0')
+        return 0;
     tab = my_str_to_word_array(str);
     result = handle_history_command(tab, head);
-    free_args(tab);
     return result;
 }
 
