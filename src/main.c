@@ -29,11 +29,11 @@ void process_command(char *line, env_t *head, int *exit_status,
     free_args(args);
 }
 
-void handle_input(env_t *head, int *exit_status, char **env)
+void handle_input(env_t *head, int *exit_status, char **env,
+    history_t **history_main)
 {
     char *line = NULL;
     int result = 0;
-    static history_t *history = NULL;
 
     if (isatty(STDIN_FILENO) == 1)
         print_header();
@@ -41,7 +41,7 @@ void handle_input(env_t *head, int *exit_status, char **env)
         line = read_line(exit_status);
         if (!line)
             return;
-        result = history_add(line, &history);
+        result = history_add(line, history_main);
         if (line[0] == '\0') {
             free(line);
             continue;
@@ -56,11 +56,13 @@ int main(int ac, char **av, char **env)
 {
     env_t *head = def_linked_list(env[0], 0, env);
     int exit_status = 0;
+    history_t *history = NULL;
 
     (void)ac;
     (void)av;
     signal(SIGINT, handle_ctr_c);
-    handle_input(head, &exit_status, env);
+    handle_input(head, &exit_status, env, &history);
+    free_history(history);
     free_list(head);
     return exit_status;
 }

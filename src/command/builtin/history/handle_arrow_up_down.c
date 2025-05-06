@@ -66,5 +66,6 @@ char *history_navigation(char seq[2])
         display_current_command(current->command);
         return current->command;
     }
+    free_history(history_start);
     return NULL;
 }
