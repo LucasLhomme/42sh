@@ -79,28 +79,47 @@ int exec_pipe_command(pipe_command_t *commands, env_t *env, int *exit_status)
     return 0;
 }
 
-static pipe_command_t *initialize_pipe_command(void)
+static int *get_size_cmd(char **args)
+{
+    int *cmd = malloc(sizeof(int) * 2);
+    int cmd1_size = 0;
+    int cmd2_size = 0;
+    int i = 0;
+
+    for (; args[i] != NULL && strcmp(args[i], "|") != 0; i++)
+        cmd1_size++;
+    if (args[i] != NULL)
+        i++;
+    for (int j = i; args[j] != NULL; j++)
+        cmd2_size++;
+    cmd[0] = cmd1_size;
+    cmd[1] = cmd2_size + 1;
+    return cmd;
+}
+
+
+static pipe_command_t *initialize_pipe_command(char **args)
 {
     pipe_command_t *commands = malloc(sizeof(pipe_command_t));
+    int cmd = len_tab(args);
 
-    if (!commands)
+    if (!commands || !cmd)
         return NULL;
     commands->is_pipe = 0;
     commands->pid1 = 0;
     commands->pid2 = 0;
     commands->fd[0] = -1;
     commands->fd[1] = -1;
-    for (int i = 0; i < 256; i++) {
-        commands->cmd1[i] = NULL;
-        commands->cmd2[i] = NULL;
-    }
+    commands->cmd1 = calloc(cmd + 1, sizeof(char *));
+    commands->cmd2 = calloc(cmd + 1, sizeof(char *));
+    if (!commands->cmd1 ||  !commands->cmd2)
+        return NULL;
     return commands;
 }
 
 static void parse_pipe_arguments(char **args, pipe_command_t *commands)
 {
-    int i = 0;
-    int j = 0;
+    int i = 0, j = 0;
 
     for (; args[i] != NULL; i++) {
         if (my_strcmp(args[i], "|") == 0) {
@@ -111,6 +130,7 @@ static void parse_pipe_arguments(char **args, pipe_command_t *commands)
         }
         commands->cmd1[i] = my_strdup(args[i]);
     }
+    commands->cmd1[i] = NULL;
     while (args[i] != NULL) {
         commands->cmd2[j] = my_strdup(args[i]);
         j++;
@@ -121,16 +141,23 @@ static void parse_pipe_arguments(char **args, pipe_command_t *commands)
 
 int handle_pipes(char **args, env_t *head, int *exit_status)
 {
-    pipe_command_t *commands = initialize_pipe_command();
+    pipe_command_t *commands = initialize_pipe_command(args);
 
     if (!commands || (args[0] && my_strcmp(args[0], "|") == 0)) {
         print_error(NULL, "Invalid null command.");
         *exit_status = 1;
-        free(commands);
+        if (commands)
+            free(commands);
         return 1;
     }
     parse_pipe_arguments(args, commands);
     exec_pipe_command(commands, head, exit_status);
+    for (int i = 0; commands->cmd1[i]; i++)
+        free(commands->cmd1[i]);
+    for (int i = 0; commands->cmd2[i]; i++)
+        free(commands->cmd2[i]);
+    free(commands->cmd1);
+    free(commands->cmd2);
     free(commands);
     return 0;
 }

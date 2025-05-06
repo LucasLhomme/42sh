@@ -64,8 +64,8 @@ typedef struct command_s {
 } command_t;
 
 typedef struct pipe_command {
-    char *cmd1[256];
-    char *cmd2[256];
+    char **cmd1;
+    char **cmd2;
     int is_pipe;
     pid_t pid1;
     pid_t pid2;
