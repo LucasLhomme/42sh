@@ -63,6 +63,7 @@ int history_handle(char *str, history_t **head)
         return 0;
     tab = my_str_to_word_array(str);
     result = handle_history_command(tab, head);
+    free_word_array(tab);
     return result;
 }
 

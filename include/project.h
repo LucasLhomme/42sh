@@ -247,6 +247,8 @@ void my_putstrerror(const char *str);
 
 int count_node(history_t *head);
 
+void free_word_array(char **array);
+
 // Special inputs
 
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
