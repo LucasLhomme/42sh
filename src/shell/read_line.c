@@ -34,7 +34,8 @@ static void handle_arrow_keys(char seq[2], char *line, int *pos, int *len)
 static void handle_backspace(handle_ctrl_t ctrl)
 {
     if (*ctrl.pos > 0) {
-        memmove(&ctrl.line[*ctrl.pos - 1], &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
+        memmove(&ctrl.line[*ctrl.pos - 1], &ctrl.line[*ctrl.pos],
+            *ctrl.len - *ctrl.pos);
         (*ctrl.len)--;
         (*ctrl.pos)--;
         write(1, "\b", 1);
@@ -49,7 +50,8 @@ void insert_char(handle_ctrl_t ctrl)
 {
     if (*ctrl.len < 1023) {
         if (*ctrl.pos < *ctrl.len)
-            memmove(&ctrl.line[*ctrl.pos + 1], &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
+            memmove(&ctrl.line[*ctrl.pos + 1], &ctrl.line[*ctrl.pos],
+                *ctrl.len - *ctrl.pos);
         ctrl.line[*ctrl.pos] = ctrl.c;
         (*ctrl.len)++;
         (*ctrl.pos)++;
@@ -107,6 +109,7 @@ static int check_character(handle_ctrl_t ctrl)
 static int read_character(handle_ctrl_t ctrl, int *exit_status)
 {
     int status = 0;
+
     if (read(STDIN_FILENO, &ctrl.c, 1) != 1)
         return -1;
     status = check_character(ctrl);

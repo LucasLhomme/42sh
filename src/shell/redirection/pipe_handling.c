@@ -97,7 +97,6 @@ static int *get_size_cmd(char **args)
     return cmd;
 }
 
-
 static pipe_command_t *initialize_pipe_command(char **args)
 {
     pipe_command_t *commands = malloc(sizeof(pipe_command_t));
@@ -112,14 +111,15 @@ static pipe_command_t *initialize_pipe_command(char **args)
     commands->fd[1] = -1;
     commands->cmd1 = calloc(cmd + 1, sizeof(char *));
     commands->cmd2 = calloc(cmd + 1, sizeof(char *));
-    if (!commands->cmd1 ||  !commands->cmd2)
+    if (!commands->cmd1 || !commands->cmd2)
         return NULL;
     return commands;
 }
 
 static void parse_pipe_arguments(char **args, pipe_command_t *commands)
 {
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
 
     for (; args[i] != NULL; i++) {
         if (my_strcmp(args[i], "|") == 0) {
