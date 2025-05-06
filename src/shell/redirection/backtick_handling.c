@@ -93,9 +93,10 @@ void free_args(char **args)
 {
     if (!args)
         return;
-    for (int i = 0; args[i] != NULL; i++)
+    for (int i = 0; args[i] != NULL; i++) {
         free(args[i]);
-    free(args);
+        args[i] = NULL;
+    }
 }
 
 int backtick_handle(char **args, int *exit_status)

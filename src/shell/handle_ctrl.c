@@ -10,8 +10,8 @@
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status)
 {
     if (handle_ctrl->c == 12)
-        *exit_status = handle_ctrl_l(handle_ctrl->line, handle_ctrl->pos,
-            handle_ctrl->len);
+        *exit_status = handle_ctrl_l(handle_ctrl->line,
+    handle_ctrl->pos, handle_ctrl->len);
     if (handle_ctrl->c == 1)
         *exit_status = handle_ctrl_a(handle_ctrl->pos);
     if (handle_ctrl->c == 5)

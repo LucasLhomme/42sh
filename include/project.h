@@ -83,12 +83,15 @@ typedef struct {
     int *exit_status;
 } double_pipe_t;
 
-typedef struct handle_ctrl_s {
-    char c;
+typedef struct {
     char *line;
+    char **line_ptr;
     int *pos;
     int *len;
+    char c;
+    int capacity;
 } handle_ctrl_t;
+
 
 // Builtin funtion
 
@@ -135,7 +138,7 @@ history_t *def_linked_list_history(FILE *history_file);
 history_t *add_command_to_history(history_t *head, char *command);
 
 void print_history(history_t *head);
-
+//int history_add(char *line);
 void free_history(history_t *head);
 
 // Exec function
@@ -184,13 +187,17 @@ int print_prompt(void);
 
 void handle_horizontal_arrows(char seq[2], int *pos, int *len);
 
-void handle_vertical_arrows(char seq[2], char *line, int *pos, int *len);
-
-char *read_line(int *exit_status);
+void handle_vertical_arrows(char seq[2], handle_ctrl_t *ctrl);
 
 void parse_args(char *line, char **args, int size);
 
 void free_args(char **args);
+
+char *read_line(int *exit_status);
+
+void insert_char(handle_ctrl_t ctrl);
+
+int ensure_capacity(handle_ctrl_t *ctrl);
 
 // History
 
@@ -207,8 +214,6 @@ char *get_history_file_path(void);
 char *history_navigation(char seq[2]);
 
 history_t *make_history_linked_list(FILE *history_file, history_t *head);
-
-//int history_add(char *line);
 
 //handle ctrl
 

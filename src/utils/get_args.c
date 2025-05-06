@@ -22,7 +22,13 @@ static char *extract_command(char **str)
         strncmp(*str, "||", 2) != 0 && **str != ';')
     (*str)++;
     len = *str - start;
-    word = strndup(start, len);
+    if (len > 0) {
+        word = strndup(start, len);
+        if (!word || !*word) {
+            free(word);
+            return NULL;
+        }
+    }
     return word;
 }
 
@@ -32,6 +38,8 @@ static int spot_double_ampersand(char **token, char **args, int *argc)
 
     if (strncmp(*token, "&&", 2) == 0) {
         sep = strdup("&&");
+        if (!sep)
+            return 0;
         args[*argc] = sep;
         (*argc)++;
         *token += 2;
@@ -46,6 +54,8 @@ static int spot_double_pipe(char **token, char **args, int *argc)
 
     if (strncmp(*token, "||", 2) == 0) {
         sep = strdup("||");
+        if (!sep)
+            return 0;
         args[*argc] = sep;
         (*argc)++;
         *token += 2;
@@ -60,6 +70,8 @@ static int spot_semicolon(char **token, char **args, int *argc)
 
     if (**token == ';') {
         sep = strdup(";");
+        if (!sep)
+            return 0;
         args[*argc] = sep;
         (*argc)++;
         (*token)++;
@@ -75,7 +87,8 @@ static void spot_command(char **token, char **args, int *argc)
     if (word && *word) {
         args[*argc] = word;
         (*argc)++;
-    }
+    } else
+        free(word);
 }
 
 static void parse_token(char *token, char **args, int *argc, int size)

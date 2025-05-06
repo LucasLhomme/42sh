@@ -12,12 +12,14 @@ static int find_word_start(handle_ctrl_t *ctrl, int *delete_count)
     int i = *(ctrl->pos);
 
     if (*(ctrl->pos) <= 0)
-        return 1;
-    for (; i > 0 && isspace(ctrl->line[i - 1]); i--, (*delete_count)++);
+        return -1;
+    for (; i > 0 && isspace(ctrl->line[i - 1]); i--)
+        (*delete_count)++;
     for (; i > 0 && (isalnum(ctrl->line[i - 1]) ||
-    ctrl->line[i - 1] == '_'); i--, (*delete_count)++);
+        ctrl->line[i - 1] == '_'); i--)
+        (*delete_count)++;
     if (*delete_count == 0)
-        return 1;
+        return -1;
     return i;
 }
 
@@ -27,8 +29,8 @@ static void move_cursor_back(int delete_count)
         write(STDOUT_FILENO, "\b", 1);
 }
 
-static void update_line_buffer(handle_ctrl_t *ctrl, int start_pos, int old_len,
-    int delete_count)
+static void update_line_buffer(handle_ctrl_t *ctrl, int start_pos,
+    int old_len, int delete_count)
 {
     for (int j = start_pos; j < old_len; j++)
         ctrl->line[j] = ctrl->line[j + delete_count];
