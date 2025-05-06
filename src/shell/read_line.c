@@ -34,13 +34,8 @@ static void handle_arrow_keys(char seq[2], handle_ctrl_t ctrl)
 static void handle_backspace(handle_ctrl_t ctrl)
 {
     if (*ctrl.pos > 0) {
-<<<<<<< HEAD
-        memmove(&ctrl.line[*ctrl.pos - 1], &ctrl.line[*ctrl.pos],
-            *ctrl.len - *ctrl.pos);
-=======
         memmove(&ctrl.line[*ctrl.pos - 1],
             &ctrl.line[*ctrl.pos], *ctrl.len - *ctrl.pos);
->>>>>>> 2d709b901a6195b4f2abbbf844b3ad1c6dea33ca
         (*ctrl.len)--;
         (*ctrl.pos)--;
         write(1, "\b", 1);
