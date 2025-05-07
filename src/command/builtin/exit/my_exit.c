@@ -25,15 +25,8 @@ static int exit_loop(char *arg)
 
 int my_exit(char **args, history_t *history)
 {
-    printf("EZLEZLHDSFLUHLJLFSDKJFHQSKDJFHMQSKJDFHQOEZUIHKJBDSLJVFLJDFFSJDV\n");
     int status = 0;
-    //printf("lol ------------------------------------------------------------------------------------- : %s\n", args[0]);
 
-    for (int i = 0; args[i]; i++) {
-        printf("arg : %s\n", args[i]);
-    }
-    if (!args)
-        printf("bah wsh ya quoi ??\n");
     if (args != NULL && args[0] != NULL && args[1] != NULL) {
         if (exit_loop(args[1])) {
             my_printf("exit\n");

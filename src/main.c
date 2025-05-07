@@ -29,49 +29,6 @@ void process_command(char *line, env_t *head, int *exit_status,
     free_args(args);
 }
 
-void handle_input(env_t *head, int *exit_status, char **env,
-    history_t **history_main)
-{
-    char *line = NULL;
-    int result = 0;
-    int size = 0;
-    char **args = NULL;
-    
-
-    if (isatty(STDIN_FILENO) == 1)
-        print_header();
-    while (1) {
-        line = read_line(exit_status, *history_main);
-        if (!line) {
-                print_history(*history_main);
-                my_exit(NULL, *history_main);
-                return;
-        }
-        size = strlen(line);
-        result = history_add(line, history_main);
-        if (line[0] == '\0') {
-            free(line);
-            continue;
-        }
-        args = is_exit_cmd(line);
-        for (int i = 0; args[i]; i++) {
-            printf("arg : %s\n", args[i]);
-        }
-        if (args) {
-
-            printf("lol\n");
-            my_exit(args, *history_main);
-            free_args(args);
-            return;
-        }
-        if (result == 1)
-            process_command(line, head, exit_status, env);
-        free_args(args);
-        free(line);
-    }
-}
-
-
 int main(int ac, char **av, char **env)
 {
     env_t *head = def_linked_list(env[0], 0, env);

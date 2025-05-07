@@ -60,6 +60,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/print_error.c \
 			$(UTILS_DIR)/get_args.c \
 			$(SRC_DIR)/main.c \
+			$(SRC_DIR)/handle_input.c \
 			$(SHELL_DIR)/print_prompt.c \
 			$(SHELL_DIR)/read_line.c \
 			$(SHELL_DIR)/insert_char.c \

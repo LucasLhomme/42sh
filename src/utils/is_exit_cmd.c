@@ -9,10 +9,11 @@
 
 char **is_exit_cmd(char *line)
 {
-    printf("line : %s\n", line);
     int size = strlen(line);
-    char **args = malloc(sizeof(char *) * size + 1);
- 
+    char **args = NULL;
+
+    if (!args)
+        return NULL;
     parse_args(line, args, size);
     if (strcmp(args[0], "exit") == 0)
         return args;

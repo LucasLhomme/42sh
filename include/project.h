@@ -16,6 +16,7 @@
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <string.h>
+    #include <unistd.h>
     #include "struct_word_array.h"
 
 
@@ -200,6 +201,9 @@ void insert_char(handle_ctrl_t ctrl);
 
 int ensure_capacity(handle_ctrl_t *ctrl);
 
+void handle_input(env_t *head, int *exit_status, char **env,
+    history_t **history_main);
+
 // History
 
 int history_add(char *line, history_t **history);
@@ -252,6 +256,7 @@ char **is_exit_cmd(char *line);
 
 // Special inputs
 
-int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status, history_t *history);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
+    history_t *history);
 
 #endif

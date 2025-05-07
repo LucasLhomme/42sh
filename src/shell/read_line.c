@@ -86,7 +86,8 @@ static int check_character(handle_ctrl_t ctrl)
     return -1;
 }
 
-static int read_character(handle_ctrl_t ctrl, int *exit_status, history_t *history)
+static int read_character(handle_ctrl_t ctrl, int *exit_status,
+    history_t *history)
 {
     int status = 0;
 

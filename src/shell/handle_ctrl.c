@@ -7,7 +7,8 @@
 #include <unistd.h>
 #include "project.h"
 
-int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status, history_t *history)
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
+    history_t *history)
 {
     if (handle_ctrl->c == 12)
         *exit_status = handle_ctrl_l(handle_ctrl->line,
@@ -24,9 +25,7 @@ int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status, history_t *history)
             handle_ctrl->len);
     if (handle_ctrl->c == 23)
         return handle_ctrl_w(handle_ctrl);
-    if (handle_ctrl->c == 4) {
-        //printf("enfaite ca marche dans check \n");
+    if (handle_ctrl->c == 4)
         my_exit(NULL, history);
-    }
     return *exit_status;
 }
