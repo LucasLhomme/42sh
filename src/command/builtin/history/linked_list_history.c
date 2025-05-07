@@ -76,7 +76,7 @@ history_t *def_linked_list_history(FILE *history_file)
 
 void free_history(history_t *head)
 {
-    history_t *tmp = malloc(sizeof(history_t));
+    history_t *tmp = NULL;
 
     while (head != NULL) {
         tmp = head;
