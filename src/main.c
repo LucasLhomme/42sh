@@ -34,23 +34,43 @@ void handle_input(env_t *head, int *exit_status, char **env,
 {
     char *line = NULL;
     int result = 0;
+    int size = 0;
+    char **args = NULL;
+    
 
     if (isatty(STDIN_FILENO) == 1)
         print_header();
     while (1) {
-        line = read_line(exit_status);
-        if (!line)
-            return;
+        line = read_line(exit_status, *history_main);
+        if (!line) {
+                print_history(*history_main);
+                my_exit(NULL, *history_main);
+                return;
+        }
+        size = strlen(line);
         result = history_add(line, history_main);
         if (line[0] == '\0') {
             free(line);
             continue;
         }
+        args = is_exit_cmd(line);
+        for (int i = 0; args[i]; i++) {
+            printf("arg : %s\n", args[i]);
+        }
+        if (args) {
+
+            printf("lol\n");
+            my_exit(args, *history_main);
+            free_args(args);
+            return;
+        }
         if (result == 1)
             process_command(line, head, exit_status, env);
+        free_args(args);
         free(line);
     }
 }
+
 
 int main(int ac, char **av, char **env)
 {
@@ -62,6 +82,7 @@ int main(int ac, char **av, char **env)
     (void)av;
     signal(SIGINT, handle_ctr_c);
     handle_input(head, &exit_status, env, &history);
+    print_history(history);
     free_history(history);
     free_list(head);
     return exit_status;

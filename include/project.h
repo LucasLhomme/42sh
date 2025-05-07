@@ -15,6 +15,7 @@
     #include <ctype.h>
     #include <sys/types.h>
     #include <sys/stat.h>
+    #include <string.h>
     #include "struct_word_array.h"
 
 
@@ -101,7 +102,7 @@ int my_cd(char **args, env_t *head, char **env, int *exit_status);
 
 int my_env(char **args, env_t *head, char **env, int *exit_status);
 
-int my_exit(char **args, env_t *head, char **env, int *exit_statusv);
+int my_exit(char **args, history_t *history);
 
 int my_unsetenv(char **args, env_t *head, char **env, int *exit_status);
 
@@ -138,7 +139,7 @@ history_t *def_linked_list_history(FILE *history_file);
 history_t *add_command_to_history(history_t *head, char *command);
 
 void print_history(history_t *head);
-//int history_add(char *line);
+
 void free_history(history_t *head);
 
 // Exec function
@@ -193,7 +194,7 @@ void parse_args(char *line, char **args, int size);
 
 void free_args(char **args);
 
-char *read_line(int *exit_status);
+char *read_line(int *exit_status, history_t *history);
 
 void insert_char(handle_ctrl_t ctrl);
 
@@ -208,8 +209,6 @@ int print_last_n(history_t *head, int idx);
 int history_clear(history_t **head);
 
 char *get_history_file_path(void);
-
-// int history_navigation(char seq[2]);
 
 char *history_navigation(char seq[2]);
 
@@ -249,8 +248,10 @@ int count_node(history_t *head);
 
 void free_word_array(char **array);
 
+char **is_exit_cmd(char *line);
+
 // Special inputs
 
-int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status, history_t *history);
 
 #endif

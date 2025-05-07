@@ -12,7 +12,6 @@
 const builtin_t builtin[] = {
     {"cd", my_cd},
     {"env", my_env},
-    {"exit", my_exit},
     {"setenv", my_setenv},
     {"unsetenv", my_unsetenv},
     {"echo", my_echo},

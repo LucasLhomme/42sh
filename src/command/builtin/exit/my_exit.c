@@ -23,20 +23,26 @@ static int exit_loop(char *arg)
     return 0;
 }
 
-int my_exit(char **args, env_t *head, char **env, int *exit_status)
+int my_exit(char **args, history_t *history)
 {
+    printf("EZLEZLHDSFLUHLJLFSDKJFHQSKDJFHMQSKJDFHQOEZUIHKJBDSLJVFLJDFFSJDV\n");
     int status = 0;
+    //printf("lol ------------------------------------------------------------------------------------- : %s\n", args[0]);
 
-    (void)exit_status;
-    (void)env;
-    (void)head;
-    if (args[1]) {
+    for (int i = 0; args[i]; i++) {
+        printf("arg : %s\n", args[i]);
+    }
+    if (!args)
+        printf("bah wsh ya quoi ??\n");
+    if (args != NULL && args[0] != NULL && args[1] != NULL) {
         if (exit_loop(args[1])) {
             my_printf("exit\n");
             exit(84);
         }
         status = my_atoi(args[1]);
     }
+    if (history)
+        free_history(history);
     my_printf("exit\n");
     exit(status);
 }

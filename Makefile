@@ -75,6 +75,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 			$(UTILS_DIR)/execute_seg.c \
 			$(UTILS_DIR)/count_node.c \
 			$(UTILS_DIR)/free_word_array.c \
+			$(UTILS_DIR)/is_exit_cmd.c \
 			$(SHELL_PROG_DIR)/my_which.c \
 			$(SHELL_PROG_DIR)/my_where.c \
 			$(SHELL_DIR)/handle_ctrl.c \

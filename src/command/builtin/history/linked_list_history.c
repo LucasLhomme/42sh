@@ -15,6 +15,7 @@
 
 void print_history(history_t *head)
 {
+    printf("enfaite ca marche\n");
     if (head == NULL)
         return;
     while (head != NULL) {
@@ -23,17 +24,13 @@ void print_history(history_t *head)
     }
 }
 
-history_t *create_history_node(char *command)
+history_t *create_history_node(const char *line)
 {
     history_t *node = malloc(sizeof(history_t));
 
     if (!node)
         return NULL;
-    node->command = strdup(command);
-    if (!node->command) {
-        free(node);
-        return NULL;
-    }
+    node->command = strdup(line);
     node->next = NULL;
     node->prev = NULL;
     return node;
@@ -65,9 +62,7 @@ history_t *def_linked_list_history(FILE *history_file)
 
     if (!history_file)
         return NULL;
-    read = getline(&line, &len, history_file);
-    while (read != -1) {
-        read = getline(&line, &len, history_file);
+    while ((read = getline(&line, &len, history_file)) != -1) {
         if (read > 0 && line[read - 1] == '\n')
             line[read - 1] = '\0';
         head = add_command_to_history(head, line);
@@ -78,12 +73,11 @@ history_t *def_linked_list_history(FILE *history_file)
 
 void free_history(history_t *head)
 {
-    history_t *temp;
-
-    while (head) {
-        temp = head;
+    history_t *tmp;
+    while (head != NULL) {
+        tmp = head;
         head = head->next;
-        free(temp->command);
-        free(temp);
+        free(tmp->command);
+        free(tmp);
     }
 }
