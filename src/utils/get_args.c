@@ -21,7 +21,7 @@ static char *extract_command(char **str)
     while (**str && strncmp(*str, "&&", 2) != 0 &&
         strncmp(*str, "||", 2) != 0 && **str != ';')
     (*str)++;
-    len = *str - start;
+        len = *str - start;
     if (len > 0) {
         word = strndup(start, len);
         if (!word || !*word) {
@@ -40,8 +40,7 @@ static int spot_double_ampersand(char **token, char **args, int *argc)
         sep = strdup("&&");
         if (!sep)
             return 0;
-        args[*argc] = sep;
-        (*argc)++;
+        args[(*argc)++] = sep;
         *token += 2;
         return 1;
     }
