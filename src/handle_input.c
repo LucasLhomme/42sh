@@ -16,7 +16,7 @@ static void handle_exit(char *line, input_t *ctx)
         return;
     for (int i = 0; args[i] != NULL; i++)
         printf("arg : %s\n", args[i]);
-    my_exit(args, *ctx->history);
+    my_exit(args, *ctx->history, ctx->env_list);
 }
 
 static int handle_line(char *line, input_t *ctx)
@@ -49,10 +49,10 @@ void handle_input(env_t *head, int *exit_status, char **env,
     if (isatty(STDIN_FILENO) == 1)
         print_header();
     while (1) {
-        line = read_line(exit_status, *history_main);
+        line = read_line(exit_status, *history_main, head);
         if (!line) {
             print_history(*history_main);
-            my_exit(NULL, *history_main);
+            my_exit(NULL, *history_main, head);
             return;
         }
         handle_line(line, &ctx);

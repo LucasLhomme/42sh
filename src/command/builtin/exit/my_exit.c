@@ -23,7 +23,7 @@ static int exit_loop(char *arg)
     return 0;
 }
 
-int my_exit(char **args, history_t *history)
+int my_exit(char **args, history_t *history, env_t *head)
 {
     int status = 0;
 
@@ -37,6 +37,7 @@ int my_exit(char **args, history_t *history)
     if (history)
         free_history(history);
     free_loaded_history();
+    free_list(head);
     my_printf("exit\n");
     exit(status);
 }

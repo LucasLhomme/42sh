@@ -87,7 +87,7 @@ static int check_character(handle_ctrl_t ctrl)
 }
 
 static int read_character(handle_ctrl_t ctrl, int *exit_status,
-    history_t *history)
+    history_t *history, env_t *head)
 {
     int status = 0;
 
@@ -95,7 +95,7 @@ static int read_character(handle_ctrl_t ctrl, int *exit_status,
         return -1;
     status = check_character(ctrl);
     if (status == -1)
-        status = check_ctrl(&ctrl, exit_status, history);
+        status = check_ctrl(&ctrl, exit_status, history, head);
     return status;
 }
 
@@ -124,7 +124,7 @@ static int prepare_reading(char **line, struct termios *oldt,
     return 0;
 }
 
-char *read_line(int *exit_status, history_t *history)
+char *read_line(int *exit_status, history_t *history, env_t *head)
 {
     static struct termios oldt;
     handle_ctrl_t ctrl;
@@ -133,16 +133,20 @@ char *read_line(int *exit_status, history_t *history)
     int len = 0;
     int status = 1;
 
-    if (prepare_reading(&line, &oldt, &ctrl) == -1)
+    if (prepare_reading(&line, &oldt, &ctrl) == -1) {
+        free(line);
         return NULL;
+    }
     ctrl.line = line;
     ctrl.line_ptr = &line;
     ctrl.pos = &pos;
     ctrl.len = &len;
     while (status > 0) {
-        if (ensure_capacity(&ctrl) == -1)
+        if (ensure_capacity(&ctrl) == -1) {
+            free(ctrl.line);
             return NULL;
-        status = read_character(ctrl, exit_status, history);
+        }
+        status = read_character(ctrl, exit_status, history, head);
     }
     return finalize_line(line, len, status, &oldt);
 }

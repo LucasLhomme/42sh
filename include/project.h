@@ -109,7 +109,7 @@ int my_cd(char **args, env_t *head, char **env, int *exit_status);
 
 int my_env(char **args, env_t *head, char **env, int *exit_status);
 
-int my_exit(char **args, history_t *history);
+int my_exit(char **args, history_t *history, env_t *head);
 
 int my_unsetenv(char **args, env_t *head, char **env, int *exit_status);
 
@@ -203,7 +203,7 @@ void parse_args(char *line, char **args, int size);
 
 void free_args(char **args);
 
-char *read_line(int *exit_status, history_t *history);
+char *read_line(int *exit_status, history_t *history, env_t *head);
 
 void insert_char(handle_ctrl_t ctrl);
 
@@ -265,6 +265,6 @@ char **is_exit_cmd(char *line);
 // Special inputs
 
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
-    history_t *history);
+    history_t *history, env_t *head);
 
 #endif
