@@ -90,7 +90,7 @@ SRC_FILES	=	$(CD_DIR)/my_cd.c \
 
 OBJ		=	$(SRC_FILES:.c=.o)
 
-CFLAGS	+=	-g -I$(INCLUDE_DIR) -Wall -Wextra -L lib -lm
+CFLAGS	+= -I$(INCLUDE_DIR) -Wall -Wextra -L lib -lm
 
 all: $(LIB) $(NAME)
 	@echo -e "$(PINK)Compilation terminée !$(RESET)"

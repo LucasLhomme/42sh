@@ -262,6 +262,12 @@ void free_word_array(char **array);
 
 char **is_exit_cmd(char *line);
 
+int check_capacity(handle_ctrl_t ctrl);
+
+handle_ctrl_t init_control(char *line, handle_ctrl_t ctrl, int pos, int len);
+
+int free_line(int status, char *line);
+
 // Special inputs
 
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,

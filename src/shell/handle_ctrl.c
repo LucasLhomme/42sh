@@ -4,6 +4,7 @@
 ** File description:
 ** handle_ctrl
 */
+
 #include <unistd.h>
 #include "project.h"
 
@@ -26,6 +27,6 @@ int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
     if (handle_ctrl->c == 23)
         return handle_ctrl_w(handle_ctrl);
     if (handle_ctrl->c == 4)
-        my_exit(NULL, history, head);
+        return -2;
     return *exit_status;
 }

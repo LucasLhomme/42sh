@@ -137,16 +137,13 @@ char *read_line(int *exit_status, history_t *history, env_t *head)
         free(line);
         return NULL;
     }
-    ctrl.line = line;
-    ctrl.line_ptr = &line;
-    ctrl.pos = &pos;
-    ctrl.len = &len;
+    ctrl = init_control(line, ctrl, pos, len);
     while (status > 0) {
-        if (ensure_capacity(&ctrl) == -1) {
-            free(ctrl.line);
+        if (check_capacity(ctrl) == 84)
             return NULL;
-        }
         status = read_character(ctrl, exit_status, history, head);
+        if (free_line(status, line) == 84)
+            return NULL;
     }
     return finalize_line(line, len, status, &oldt);
 }
