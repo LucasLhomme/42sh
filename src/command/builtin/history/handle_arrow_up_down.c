@@ -69,3 +69,10 @@ char *history_navigation(char seq[2])
     free_history(history_start);
     return NULL;
 }
+
+void free_loaded_history(void)
+{
+    history_t *history_start = load_history();
+
+    free_history(history_start);
+}

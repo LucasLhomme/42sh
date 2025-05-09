@@ -36,6 +36,7 @@ int my_exit(char **args, history_t *history)
     }
     if (history)
         free_history(history);
+    free_loaded_history();
     my_printf("exit\n");
     exit(status);
 }

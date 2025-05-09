@@ -94,6 +94,12 @@ typedef struct {
     int capacity;
 } handle_ctrl_t;
 
+typedef struct input_s {
+    env_t *env_list;
+    int *exit_status;
+    char **env;
+    history_t **history;
+} input_t;
 
 // Builtin funtion
 
@@ -142,6 +148,8 @@ history_t *add_command_to_history(history_t *head, char *command);
 void print_history(history_t *head);
 
 void free_history(history_t *head);
+
+void free_loaded_history(void);
 
 // Exec function
 

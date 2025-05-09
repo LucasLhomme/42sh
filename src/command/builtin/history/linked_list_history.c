@@ -15,7 +15,6 @@
 
 void print_history(history_t *head)
 {
-    printf("enfaite ca marche\n");
     if (head == NULL)
         return;
     while (head != NULL) {
