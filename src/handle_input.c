@@ -7,7 +7,6 @@
 
 #include "project.h"
 
-
 static void handle_exit(char *line, input_t *ctx)
 {
     char **args = is_exit_cmd(line);
@@ -16,6 +15,7 @@ static void handle_exit(char *line, input_t *ctx)
         return;
     for (int i = 0; args[i] != NULL; i++)
         printf("arg : %s\n", args[i]);
+    free(line);
     my_exit(args, *ctx->history, ctx->env_list);
 }
 
