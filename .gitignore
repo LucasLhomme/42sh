@@ -6,7 +6,6 @@ boggle
 *.a
 a.out
 test.c
-mysh
 *.sh
 .vscode
 *.txt
