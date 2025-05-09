@@ -262,6 +262,17 @@ void free_word_array(char **array);
 
 char **is_exit_cmd(char *line);
 
+void initialize_ctrl(handle_ctrl_t *ctrl, char *line,
+    int *pos, int *len);
+
+int handle_ctrl_d(int status, char *line,
+    history_t *history, env_t *head);
+
+int process_input_loop(handle_ctrl_t *ctrl, int *exit_status,
+    history_t *history, env_t *head);
+
+int read_character(handle_ctrl_t ctrl, int *exit_status);
+
 // Special inputs
 
 int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);

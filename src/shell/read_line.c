@@ -86,7 +86,7 @@ static int check_character(handle_ctrl_t ctrl)
     return -1;
 }
 
-static int read_character(handle_ctrl_t ctrl, int *exit_status)
+int read_character(handle_ctrl_t ctrl, int *exit_status)
 {
     int status = 0;
 
@@ -130,26 +130,15 @@ char *read_line(int *exit_status, history_t *history, env_t *head)
     char *line = NULL;
     int pos = 0;
     int len = 0;
-    int status = 1;
+    int status;
 
     if (prepare_reading(&line, &oldt, &ctrl) == -1) {
         free(line);
         return NULL;
     }
-    ctrl.line = line;
-    ctrl.line_ptr = &line;
-    ctrl.pos = &pos;
-    ctrl.len = &len;
-    while (status > 0) {
-        if (ensure_capacity(&ctrl) == -1) {
-            free(ctrl.line);
-            return NULL;
-        }
-        status = read_character(ctrl, exit_status);
-        if (status == -2) {
-            free(line);
-            my_exit(NULL, history, head);
-        }
-    }
+    initialize_ctrl(&ctrl, line, &pos, &len);
+    status = process_input_loop(&ctrl, exit_status, history, head);
+    if (status == -1)
+        return NULL;
     return finalize_line(line, len, status, &oldt);
 }
