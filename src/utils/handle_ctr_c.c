@@ -16,32 +16,3 @@ void handle_ctr_c(int sig)
         print_prompt();
     }
 }
-
-int check_capacity(handle_ctrl_t ctrl)
-{
-    if (ensure_capacity(&ctrl) == -1) {
-        if (ctrl.line)
-            free(ctrl.line);
-        return 84;
-    }
-    return 0;
-}
-
-handle_ctrl_t init_control(char *line, handle_ctrl_t ctrl, int pos, int len)
-{
-    ctrl.line = line;
-    ctrl.line_ptr = &line;
-    ctrl.pos = &pos;
-    ctrl.len = &len;
-    return ctrl;
-}
-
-int free_line(int status, char *line)
-{
-    if (status == -2) {
-        if (line)
-            free(line);
-        return 84;
-    }
-    return 0;
-}
