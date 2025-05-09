@@ -8,8 +8,7 @@
 #include <unistd.h>
 #include "project.h"
 
-int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
-    history_t *history, env_t *head)
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status)
 {
     if (handle_ctrl->c == 12)
         *exit_status = handle_ctrl_l(handle_ctrl->line,

@@ -29,7 +29,7 @@ static char *get_new_directory(char **args, env_t *head, char *oldpwd)
     if (!args[1] || my_strcmp(args[1], "~") == 0)
         return get_env("HOME", head);
     if (my_strcmp(args[1], "-") == 0) {
-        if (!oldpwd) {
+        if (!oldpwd || oldpwd[0] == '\0') {
             print_error("cd", "OLDPWD not set");
             return NULL;
         }
@@ -38,14 +38,13 @@ static char *get_new_directory(char **args, env_t *head, char *oldpwd)
     return args[1];
 }
 
-void update_history(char **history)
+void update_history(char history[2][1024])
 {
     char cwd[1024];
 
     if (getcwd(cwd, sizeof(cwd))) {
-        free(history[0]);
-        history[0] = history[1];
-        history[1] = my_strdup(cwd);
+        strncpy(history[0], history[1], 1024);
+        strncpy(history[1], cwd, 1024);
     }
 }
 
@@ -74,14 +73,14 @@ static void use_useless_variables(char **env, int *exit_status)
 
 int my_cd(char **args, env_t *head, char **env, int *exit_status)
 {
-    static char *history[2] = {NULL, NULL};
+    static char history[2][1024] = {{0}};
     char cwd[1024];
     char *new_dir = NULL;
     int file_check = 0;
 
     use_useless_variables(env, exit_status);
-    if (!history[1] && getcwd(cwd, sizeof(cwd)))
-        history[1] = my_strdup(cwd);
+    if (history[1][0] == '\0' && getcwd(cwd, sizeof(cwd)))
+        strncpy(history[1], cwd, 1024);
     if (len_tab(args) > 1) {
         my_putstrerror("cd: Too many arguments.\n");
         return 1;

@@ -86,8 +86,7 @@ static int check_character(handle_ctrl_t ctrl)
     return -1;
 }
 
-static int read_character(handle_ctrl_t ctrl, int *exit_status,
-    history_t *history, env_t *head)
+static int read_character(handle_ctrl_t ctrl, int *exit_status)
 {
     int status = 0;
 
@@ -95,7 +94,7 @@ static int read_character(handle_ctrl_t ctrl, int *exit_status,
         return -1;
     status = check_character(ctrl);
     if (status == -1)
-        status = check_ctrl(&ctrl, exit_status, history, head);
+        status = check_ctrl(&ctrl, exit_status);
     return status;
 }
 
@@ -146,7 +145,7 @@ char *read_line(int *exit_status, history_t *history, env_t *head)
             free(ctrl.line);
             return NULL;
         }
-        status = read_character(ctrl, exit_status, history, head);
+        status = read_character(ctrl, exit_status);
         if (status == -2) {
             free(line);
             my_exit(NULL, history, head);

@@ -264,8 +264,7 @@ char **is_exit_cmd(char *line);
 
 // Special inputs
 
-int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status,
-    history_t *history, env_t *head);
+int check_ctrl(handle_ctrl_t *handle_ctrl, int *exit_status);
 
 void process_command(char *line, env_t *head, int *exit_status,
     char **env);
