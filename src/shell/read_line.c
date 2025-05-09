@@ -149,7 +149,7 @@ char *read_line(int *exit_status, history_t *history, env_t *head)
         status = read_character(ctrl, exit_status, history, head);
         if (status == -2) {
             free(line);
-            return NULL;
+            my_exit(NULL, history, head);
         }
     }
     return finalize_line(line, len, status, &oldt);
