@@ -30,9 +30,9 @@ static int ensure_line_capacity(handle_ctrl_t *ctrl, size_t needed)
 {
     char *new_line = NULL;
 
-    if (needed <= ctrl->capacity)
+    if (needed <= (size_t)ctrl->capacity)
         return 1;
-    while (needed > ctrl->capacity)
+    while (needed > (size_t)ctrl->capacity)
         ctrl->capacity *= 2;
     new_line = realloc(*ctrl->line_ptr, ctrl->capacity);
     if (!new_line)

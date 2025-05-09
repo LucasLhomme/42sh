@@ -79,24 +79,6 @@ int exec_pipe_command(pipe_command_t *commands, env_t *env, int *exit_status)
     return 0;
 }
 
-static int *get_size_cmd(char **args)
-{
-    int *cmd = malloc(sizeof(int) * 2);
-    int cmd1_size = 0;
-    int cmd2_size = 0;
-    int i = 0;
-
-    for (; args[i] != NULL && strcmp(args[i], "|") != 0; i++)
-        cmd1_size++;
-    if (args[i] != NULL)
-        i++;
-    for (int j = i; args[j] != NULL; j++)
-        cmd2_size++;
-    cmd[0] = cmd1_size;
-    cmd[1] = cmd2_size + 1;
-    return cmd;
-}
-
 static pipe_command_t *initialize_pipe_command(char **args)
 {
     pipe_command_t *commands = malloc(sizeof(pipe_command_t));
