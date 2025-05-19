@@ -51,7 +51,6 @@ make
 
 ## 📚 Documentation
 
-```bash
 # Generate documentation with Doxygen
 doxygen doxygen.conf
 ```
