@@ -58,8 +58,8 @@ doxygen doxygen.conf
 
 ## 👨‍💻 Contributors
 
-- [Jonas Birck](https://github.com/jobirck)
+- [Joseph Birck](https://github.com/jobirck)
 - [Jawed Lahrouri](https://github.com/jawedlahrouri)
-- [Graham Graignard](https://github.com/graigware)
+- [Grégoire Fageot](https://github.com/graigware)
 - [Lucas Lhomme](https://github.com/LucasLhomme)
-- [Ink Urey](https://github.com/inkurey-22)
+- [Théophille Riffé](https://github.com/inkurey-22)
