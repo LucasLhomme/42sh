@@ -4,6 +4,7 @@
 [![Build: Make](https://img.shields.io/badge/Build-Makefile-orange.svg)](Makefile)
 [![Module: B-PSU-200](https://img.shields.io/badge/Epitech-B--PSU--200-blue.svg)](https://www.epitech.eu/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Academic Year: 2024-2025](https://img.shields.io/badge/Academic%20Year-2024--2025%20(Tek1)-blueviolet.svg)](#)
 
 > **42sh is the final capstone Unix System Programming project of Epitech's first year.** It is a full-featured POSIX-compliant command-line interpreter written in C from scratch, expanding upon Minishell 1 and Minishell 2.
 
@@ -14,6 +15,7 @@
 The objective of **42sh** is to build a robust, production-grade Unix shell capable of parsing complex shell grammar, handling job control, managing environment state, orchestrating inter-process communications (IPC), and providing an ergonomic interactive line editor.
 
 ### Academic Context
+- **Academic Year:** First Year / Tek1 (2024 – 2025)
 - **Institution:** Epitech (European Institute of Information Technology)
 - **Module:** B-PSU-200 — Unix System Programming
 - **Language:** C (C99 / GNU99)
